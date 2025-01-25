@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Family Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Navigation bar styling */
+        .navbar {
+            position:fixed;
+            top: 0;
+            /* Sticks to the top of the screen */
+            width: 100%;
+            background-color: #4caf50;
+            /* Green background */
+            color: white;
+            /* Text color */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            /* Subtle shadow for depth */
+            z-index: 1000;
+            /* Keeps it above other content */
+        }
+
+        .navbar h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .navbar button {
+            padding: 8px 15px;
+            background-color: #ffffff;
+            color: #4caf50;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar button:hover {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .navbar button:active {
+            transform: scale(0.95);
+        }
+
+
+
+        .generation-number {
+            font-size: 1px;
+            text-align: start;
+            font-weight: lighter;
+            font-style: italic;
+        }
+
+        .children-count {
+            font-size: 1px;
+            text-align: start;
+            font-weight: lighter;
+        }
+
+        .family-tree {
+            position: absolute;
+            top: 10%;
+            text-align: center;
+            align-self: flex-start;
+        }
+
+        .family-tree ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        .family-tree ul ul {
+            margin-top: 5px;
+            display: none;
+            /* Hidden by default for interactivity */
+        }
+
+        .family-tree li {
+            text-align: center;
+            position: relative;
+            padding: 10px 5px 0 5px;
+            list-style: none;
+        }
+
+        /* Box styles for persons */
+        .family-tree div.person {
+            display: inline-block;
+            width: auto;
+            height: 6em;
+            border-radius: 8px;
+            padding: 2px 10px;
+            font-weight: bold;
+            position: relative;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            writing-mode: horizontal-tb;
+            /* Rotate text vertically */
+            text-orientation: mixed;
+            transition: width 0.3s ease, height 0.3s ease;
+            /* Smooth resizing */
+        }
+
+        .m {
+            border: 4px solid #2b40ff;
+        }
+
+        .f {
+            border: 4px solid #ff0000;
+        }
+
+        .gen1 {
+            background-color: rgba(0, 228, 190, 0.534);
+        }
+
+        .gen2 {
+            background-color: rgba(200, 255, 0, 0.774);
+        }
+
+        .gen3 {
+            background-color: rgba(238, 0, 111, 0.507);
+        }
+
+        .gen4 {
+            background-color: rgba(32, 103, 255, 0.534);
+        }
+
+        .gen5 {
+            background-color: rgba(255, 49, 204, 0.774);
+        }
+
+        .gen6 {
+            background-color: rgba(255, 170, 58, 0.507);
+        }
+
+        .gen7 {
+            background-color: rgba(192, 32, 255, 0.534);
+        }
+
+        .gen8 {
+            background-color: rgb(255, 251, 37);
+        }
+
+        .gen9 {
+            background-color: rgba(117, 255, 63, 0.507);
+        }
+
+        .gen10 {
+            background-color: rgba(170, 255, 137, 0.911);
+        }
+
+        /* Expand/collapse toggle button */
+        .m::after {
+            content: var(--children-count, '0');
+            position: absolute;
+            bottom: -14px;
+            right: -10px;
+            background: #69ff24;
+            color: #000000;
+            font-size: 14px;
+            width: 23px;
+            height: 23px;
+            border: 1px solid #333;
+            border-radius: 0% 50% 50% 50%;
+            line-height: 23px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .person.expanded::after {
+            content: var(--children-count, '0');
+            background: #ff6924;
+        }
+
+
+        /* Responsive Design for Small Screens */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                flex-direction: column;
+            }
+
+            .family-tree div.person {
+                padding: 5px 8px;
+                font-size: smaller;
+                height: 6em;
+                writing-mode: vertical-rl;
+                display: inline-block;
+                /* Ensure proper resizing */
+            }
+
+            .family-tree li {
+                padding: 5px 0;
+                display: block;
+                /* Ensure each list item stacks vertically */
+            }
+
+
+            .family-tree ul ul {
+                margin-top: 10px;
+                display: none;
+                /* Default hidden for toggle functionality */
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="navbar">
+        <h1>____Արզումանյան գերդաստանի տոհմածառ____</h1>
+        <button onclick="expandAll()">____Ցույց տալ բոլորը____</button>
+    </div>
+    <div class="family-tree">
+        <ul>
+            <li>
+                <div class="person m" style="writing-mode: horizontal-tb; background: #ff4b4b; font-size: x-large; height: 3em;">
+                    Կոստան Արզումանյան<br>1828/30</div>
+                <ul>
+                    <li>
+                        <div class="gen1 person m">Հովհաննես</div>
+                        <ul>
+                            <li>
+                                <div class="gen2 person m">Մարտիրոս - Շողեր</div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person f">Հայկանուշ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Արփեն</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Արտաշես</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Մելիք</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Ավետիս - Հայկանուշ</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person f">Թաթիան</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Մամիկոն - Սաթենիկ/Արփեն</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Արևհատ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Արզուման - Փամբուղ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Գուրգեն - Ազգանուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Քաջայր</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Զարզանդ - Սեդա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Վարդանուշ</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="gen2 person m">Թորոս - Օսկին</div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person m">Մերգել - Խաթուն/Օվսաննա</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person f">Չինար</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Շավարշ - Վարդանուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Մանյակ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Թորոս - Վարդանուշ/Հայկանուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Մանուշակ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Մանան</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Լևոն - Խանում</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person f">Աստղիկ</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Կոստան</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Գրիգոր - Արծվիկ</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person m">Սարո - Արաքսի</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Սերոժ - Հայկուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Սիրական - Ժենիկ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Օսկին</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Հրաչուհի</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Տաճատ - Անահիտ</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person m">Վոլոդյա - Սեդա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Վանիկ - Փառանձեմ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Վերգուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Վարդանուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Հրանուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Հայկանուշ</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Փառնավազ - Վարդանուշ</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person m">Վազգեն - Հրաչուհի</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Վիկտոր - Սեդա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Շաքրո - Ասյա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Վելգին - Յուղաբեթ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Արաքսի</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="gen2 person m">Ափին - Հռիփսիմե</div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person f">Արուսյակ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Վաղինակ - Շողակաթ</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person m">Վաչագան - Սվետիկ/Լենա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Ռաֆիկ - Հռիփսիկ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Վարազդատ - Ամալյա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Մելիք</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Փարիշան</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Մարիամ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Հռիփսիկ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Լենա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Օֆիկ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Քնքուշ</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Վահագն - Զարուհի</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person m">Մելսիկ - Ժենիկ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Յուրիկ - Սեդա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Մաքսիմ - Զոյա</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Արմեն</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Նարգուշ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Նարգուշ</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Վարդգես - Արուսյակ</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person m">Վանուշ - Թամար</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Ռուբիկ - Նինել</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Վահան - Լեյլի</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Ֆելիքս</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person m">Նադիկ</div>
+                                            </li>
+                                            <li>
+                                                <div class="gen4 person f">Սեդա</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Վաչագան - Գեղեցիկ</div>
+                                        <ul>
+                                            <li>
+                                                <div class="gen4 person f">Էլեն</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="gen1 person f">Եվգինե</div>
+                    </li>
+                    <li>
+                        <div class="gen1 person m">Մկրտիչ</div>
+                        <ul>
+                            <li>
+                                <div class="gen2 person m">Պետրոս - Նունե</div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person m">Մաթևոս</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Եղիսե</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Տեր-Ստեփան - Նունե</div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="gen2 person m">Նիկողոս - Անահիտ</div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person f">Նունուֆար</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Հայկանուշ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Սենեքերիմ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Մանյակ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Հարություն - Ծաղիկ</div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="gen1 person f">Անուշ</div>
+                    </li>
+                    <li>
+                        <div class="gen1 person m">Կարապետ</div>
+                        <ul>
+                            <li>
+                                <div class="gen2 person f">Զարման</div>
+                            </li>
+                            <li>
+                                <div class="gen2 person f">Ասանեթ</div>
+                            </li>
+                            <li>
+                                <div class="gen2 person f">Փառանձեմ</div>
+                            </li>
+                            <li>
+                                <div class="gen2 person f">Թագուհի</div>
+                            </li>
+                            <li>
+                                <div class="gen2 person m">Սողոմոն - </div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person f">Արծվիկ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Դերենիկ - Չինար</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Շողիկ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Իշխան - Մանյա</div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="gen2 person m">Բագրատ - Մարիամ</div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person f">Եղիսաբեթ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Ստեփան</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Յուղաբեթ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Կարապետ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Երունակ</div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="gen1 person f">Մարիամ</div>
+                    </li>
+                    <li>
+                        <div class="gen1 person f">Փառանձեմ</div>
+                    </li>
+                    <li>
+                        <div class="gen1 person m">Եսայի</div>
+                        <ul>
+                            <li>
+                                <div class="gen2 person m">Սրապիոն - Նունյա</div>
+                                <ul>
+                                    <li>
+                                        <div class="gen3 person f">Եղիսաբեթ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Տոնա</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Եվգինե</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Վաղարշակ - Հերիքնազ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person f">Յուղաբեթ</div>
+                                    </li>
+                                    <li>
+                                        <div class="gen3 person m">Թադևոս - Նազելի</div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // Attach toggleBranch function to all elements with class "m"
+        document.querySelectorAll('.m').forEach(element => {
+            element.setAttribute('onclick', 'toggleBranch(this)');
+            const childrenCountDiv = document.createElement('div');
+            childrenCountDiv.classList.add('children-count');
+            element.appendChild(childrenCountDiv);
+            updateChildrenCount(element);
+        });
+
+        function updateChildrenCount(parent) {
+            const childrenContainer = parent.nextElementSibling;
+
+            if (childrenContainer && childrenContainer.tagName === 'UL') {
+                const childrenCount = childrenContainer.children.length;
+
+                // Dynamically update the ::after content
+                parent.style.setProperty('--children-count', `"${childrenCount}"`);
+            }
+        }
+
+        document.querySelectorAll('.person').forEach(person => {
+            // Find the generation class (e.g., gen1, gen2, etc.)
+            const genClass = Array.from(person.classList).find(cls => cls.startsWith('gen'));
+            if (genClass) {
+                const generationNumber = genClass.replace('gen', ''); // Extract the number
+                const genDiv = document.createElement('div');
+                genDiv.className = 'generation-number';
+                genDiv.textContent = `${generationNumber} gen`; // Add text
+                person.appendChild(genDiv); // Insert below the person's name
+            }
+        });
+
+        // Call updateChildrenCount for all `.m` elements when the page loads
+        document.querySelectorAll('.m').forEach(element => {
+            updateChildrenCount(element);
+
+            // Add toggle functionality
+            element.setAttribute('onclick', 'toggleBranch(this)');
+        });
+
+        function toggleBranch(element) {
+            // Find the next <ul> (children container)
+            const childrenContainer = element.nextElementSibling;
+
+            // If children exist, toggle visibility
+            if (childrenContainer && childrenContainer.tagName === 'UL') {
+                const isExpanded = childrenContainer.style.display === 'flex';
+
+                // Toggle display style
+                childrenContainer.style.display = isExpanded ? 'none' : 'flex';
+
+                // Toggle the '+' or '-' icon
+                element.classList.toggle('expanded', !isExpanded);
+
+                // Adjust the parent's width based on children
+                if (!isExpanded) {
+                    adjustParentSize(element, childrenContainer);
+                } else {
+                    // Reset parent size when collapsed
+                    element.style.width = '';
+                    element.style.height = '';
+                }
+
+                // Adjust the position of the expanded tree
+                adjustTreePosition();
+            }
+        }
+
+        function adjustParentSize(parent, childrenContainer) {
+            const children = Array.from(childrenContainer.children);
+            if (children.length) {
+                // Calculate the total width of all children
+                const totalWidth = children.reduce((sum, child) => {
+                    const childBox = child.querySelector('.person');
+                    return sum + (childBox ? childBox.offsetWidth + 0 : 0);
+                }, 0);
+
+                // Set the parent's width to match the children's total width
+                parent.style.width = `${totalWidth}px`;
+            }
+        }
+
+
+        function expandAll() {
+            document.querySelectorAll('.m').forEach(parent => {
+                const childrenContainer = parent.nextElementSibling;
+
+                if (childrenContainer && childrenContainer.tagName === 'UL') {
+                    childrenContainer.style.display = 'flex'; // Show the children
+                    parent.classList.add('expanded'); // Add the '-' icon
+                    adjustParentSize(parent, childrenContainer); // Adjust parent's size if needed
+                }
+            });
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
