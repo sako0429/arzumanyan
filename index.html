@@ -20,7 +20,7 @@
 
         /* Navigation bar styling */
         .navbar {
-            position:fixed;
+            position: fixed;
             top: 0;
             /* Sticks to the top of the screen */
             width: 100%;
@@ -41,10 +41,12 @@
         .navbar h1 {
             font-size: 20px;
             margin: 0;
+            padding-left: 1em;
+            text-align: center;
         }
 
         .navbar button {
-            padding: 8px 15px;
+            padding: 1em 1em;
             background-color: #ffffff;
             color: #4caf50;
             border: 1px solid #4caf50;
@@ -224,6 +226,9 @@
                 display: none;
                 /* Default hidden for toggle functionality */
             }
+
+            
+
         }
     </style>
 </head>
@@ -231,13 +236,14 @@
 
 <body>
     <div class="navbar">
-        <h1>____Արզումանյան գերդաստանի տոհմածառ____</h1>
-        <button onclick="expandAll()">____Ցույց տալ բոլորը____</button>
+        <h1>Արզումանյան գերդաստանի <br>տոհմածառ</h1>
+        <button onclick="expandAll()">Ցույց տալ բոլորը</button>
     </div>
     <div class="family-tree">
         <ul>
             <li>
-                <div class="person m" style="writing-mode: horizontal-tb; background: #ff4b4b; font-size: x-large; height: 3em;">
+                <div class="person m"
+                    style="writing-mode: horizontal-tb; background: #ff4b4b; font-size: x-large; height: 3em;">
                     Կոստան Արզումանյան<br>1828/30</div>
                 <ul>
                     <li>
