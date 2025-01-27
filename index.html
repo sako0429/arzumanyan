@@ -8,14 +8,13 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100dvh;
             background-color: #b5a99d;
         }
 
@@ -23,20 +22,17 @@
         .navbar {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100vw;
-            /* Golden gradient */
+            width: 100dvw;
             color: white;
             padding: 10px 20px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
 
         .navbar h1 {
-            font-size: 1em;;
+            font-size: 1.5em;
             margin: 0;
             padding-left: 1em;
             text-align: center;
@@ -46,7 +42,7 @@
             padding: 1em 1em;
             background-color: #ffffff;
             color: rgb(255, 0, 0);
-            border: 1px solid #ff0000;
+            border: 1px solid rgb(0, 0, 255);
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
@@ -54,10 +50,9 @@
         }
 
         .navbar button:hover {
-            color: white;
-        }
-
-        .navbar button:active {
+            color: rgb(0, 0, 255);
+            background-color: #b5a99d;
+            border: 1px dashed rgb(255, 0, 0);
             transform: scale(0.95);
         }
 
@@ -89,7 +84,6 @@
         }
 
         .family-tree ul ul {
-            margin-top: 5px;
             display: none;
             /* Hidden by default for interactivity */
         }
@@ -97,7 +91,7 @@
         .family-tree li {
             text-align: center;
             position: relative;
-            padding: 10px 5px 0 5px;
+            padding: 20px 10px 20px 10px;
             list-style: none;
         }
 
@@ -124,7 +118,7 @@
         }
 
         .f {
-            border: 4px solid #ff0000;
+            border: 4px solid #ff00ea;
         }
 
         .gen1 {
@@ -176,11 +170,11 @@
             background: #69ff24;
             color: #000000;
             font-size: 14px;
-            width: 23px;
-            height: 23px;
+            width: 1.5em;
+            height: 1.5em;
             border: 1px solid #333;
             border-radius: 0% 50% 50% 50%;
-            line-height: 23px;
+            line-height: 1.5em;
             text-align: center;
             cursor: pointer;
         }
@@ -194,28 +188,22 @@
         /* Responsive Design for Small Screens */
         @media (max-width: 768px) {
             body {
-                padding: 10px;
                 flex-direction: column;
             }
 
             .family-tree div.person {
-                padding: 0.5em;
-                font-size: smaller;
                 height: 6em;
-                margin-right: 0.5em;
                 writing-mode: vertical-rl;
                 display: inline-block;
                 /* Ensure proper resizing */
             }
 
             .family-tree li {
-                padding: 0.5em 0;
                 display: block;
                 /* Ensure each list item stacks vertically */
             }
 
             .family-tree ul ul {
-                margin-top: 0.5em;
                 display: none;
                 /* Default hidden for toggle functionality */
             }
@@ -628,105 +616,112 @@
     </div>
 
     <script>
-        // Attach toggleBranch function to all elements with class "m"
-        document.querySelectorAll('.m').forEach(element => {
-            element.setAttribute('onclick', 'toggleBranch(this)');
-            const childrenCountDiv = document.createElement('div');
-            childrenCountDiv.classList.add('children-count');
-            element.appendChild(childrenCountDiv);
-            updateChildrenCount(element);
+        // Initialize the tree on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            // Attach toggleBranch and update child counts for all `.m` elements
+            document.querySelectorAll('.m').forEach(parent => {
+                parent.setAttribute('onclick', 'toggleBranch(this)');
+                updateChildrenCount(parent);
+            });
+
+            // Add generation numbers for all `.person` elements
+            document.querySelectorAll('.person').forEach(person => {
+                addGenerationNumber(person);
+            });
         });
 
+        // Add generation number below each `.person`
+        function addGenerationNumber(person) {
+            const genClass = Array.from(person.classList).find(cls => cls.startsWith('gen'));
+            if (genClass) {
+                const generationNumber = genClass.replace('gen', ''); // Extract the number
+                if (!person.querySelector('.generation-number')) {
+                    const genDiv = document.createElement('div');
+                    genDiv.className = 'generation-number';
+                    genDiv.textContent = `${generationNumber} gen`;
+                    person.appendChild(genDiv);
+                }
+            }
+        }
+
+        // Update children count dynamically
         function updateChildrenCount(parent) {
             const childrenContainer = parent.nextElementSibling;
-
             if (childrenContainer && childrenContainer.tagName === 'UL') {
                 const childrenCount = childrenContainer.children.length;
-
-                // Dynamically update the ::after content
                 parent.style.setProperty('--children-count', `"${childrenCount}"`);
             }
         }
 
-        document.querySelectorAll('.person').forEach(person => {
-            // Find the generation class (e.g., gen1, gen2, etc.)
-            const genClass = Array.from(person.classList).find(cls => cls.startsWith('gen'));
-            if (genClass) {
-                const generationNumber = genClass.replace('gen', ''); // Extract the number
-                const genDiv = document.createElement('div');
-                genDiv.className = 'generation-number';
-                genDiv.textContent = `${generationNumber} gen`; // Add text
-                person.appendChild(genDiv); // Insert below the person's name
-            }
-        });
-
-        // Call updateChildrenCount for all `.m` elements when the page loads
-        document.querySelectorAll('.m').forEach(element => {
-            updateChildrenCount(element);
-
-            // Add toggle functionality
-            element.setAttribute('onclick', 'toggleBranch(this)');
-        });
-
+        // Toggle the visibility of a branch
         function toggleBranch(element) {
-            // Find the next <ul> (children container)
             const childrenContainer = element.nextElementSibling;
 
-            // If children exist, toggle visibility
             if (childrenContainer && childrenContainer.tagName === 'UL') {
                 const isExpanded = childrenContainer.style.display === 'flex';
 
                 // Toggle display style
                 childrenContainer.style.display = isExpanded ? 'none' : 'flex';
 
-                // Toggle the '+' or '-' icon
+                // Toggle the expanded class
                 element.classList.toggle('expanded', !isExpanded);
 
-                // Adjust the parent's width based on children
+                // Adjust parent's width
                 if (!isExpanded) {
                     adjustParentSize(element, childrenContainer);
                 } else {
-                    // Reset parent size when collapsed
                     element.style.width = '';
-                    element.style.height = '';
                 }
 
-                // Adjust the position of the expanded tree
+                // Adjust tree alignment after expansion
                 adjustTreePosition();
             }
         }
 
+        // Calculate total width for the parent element
         function adjustParentSize(parent, childrenContainer) {
-            const children = Array.from(childrenContainer.children);
-            if (children.length) {
-                // Calculate the total width of all children
-                const totalWidth = children.reduce((sum, child) => {
-                    const childBox = child.querySelector('.person');
-                    return sum + (childBox ? childBox.offsetWidth + 0 : 0);
-                }, 0);
+            function calculateTotalWidth(node) {
+                const children = Array.from(node.children);
+                let totalWidth = 0;
 
-                // Set the parent's width to match the children's total width
-                parent.style.width = `${totalWidth}px`;
+                children.forEach(child => {
+                    const childBox = child.querySelector('.person');
+                    if (childBox) {
+                        totalWidth += childBox.offsetWidth;
+                    }
+                    const grandChildrenContainer = child.querySelector('ul');
+                    if (grandChildrenContainer) {
+                        totalWidth += calculateTotalWidth(grandChildrenContainer);
+                    }
+                });
+
+                return totalWidth;
+            }
+
+            if (childrenContainer) {
+                const totalWidth = calculateTotalWidth(childrenContainer);
+                parent.style.width = `${totalWidth*1.2}px`;
             }
         }
 
-
+        // Expand all branches
         function expandAll() {
             document.querySelectorAll('.m').forEach(parent => {
                 const childrenContainer = parent.nextElementSibling;
-
                 if (childrenContainer && childrenContainer.tagName === 'UL') {
-                    childrenContainer.style.display = 'flex'; // Show the children
-                    parent.classList.add('expanded'); // Add the '-' icon
-                    adjustParentSize(parent, childrenContainer); // Adjust parent's size if needed
+                    childrenContainer.style.display = 'flex';
+                    parent.classList.add('expanded');
+                    adjustParentSize(parent, childrenContainer);
                 }
             });
         }
 
-
-
-
+        // Adjust tree position (optional placeholder for future functionality)
+        function adjustTreePosition() {
+            // Add logic here if tree alignment or position adjustment is needed
+        }
     </script>
+
 </body>
 
 </html>
