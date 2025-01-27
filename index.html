@@ -198,6 +198,32 @@
                 height: 6em;
                 writing-mode: vertical-rl;
                 display: inline-block;
+                margin: 5px;
+                /* Ensure proper resizing */
+            }
+
+            .family-tree li {
+                margin: 5px;
+                padding: 15px;
+                display: block;
+                /* Ensure each list item stacks vertically */
+            }
+
+            .family-tree ul ul {
+                display: none;
+                /* Default hidden for toggle functionality */
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                flex-direction: column;
+            }
+
+            .family-tree div.person {
+                height: 6em;
+                writing-mode: vertical-rl;
+                display: inline-block;
                 margin: 15px;
                 /* Ensure proper resizing */
             }
