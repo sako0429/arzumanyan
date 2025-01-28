@@ -2282,10 +2282,16 @@
             });
         }
 
-        // Adjust tree position (optional placeholder for future functionality)
-        function adjustTreePosition() {
-            // Add logic here if tree alignment or position adjustment is needed
-        }
+     function adjustTreePosition() {
+    const root = document.querySelector('.family-tree');
+    if (root) {
+        const { width } = root.getBoundingClientRect();
+        const screenWidth = window.innerWidth;
+        root.style.marginLeft = `${(screenWidth - width) / 2}px`;
+    }
+}
+
+
 const widthCache = new WeakMap();
 
 function calculateTotalWidth(node) {
