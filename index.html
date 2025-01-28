@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arzumanyan's Family Tree</title>
-    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="main.css">
+
+    <!-- Link for mobile-specific styles -->
+    <link rel="stylesheet" href="mobile.css" media="only screen and (max-width: 768px)">
 </head>
 
 
@@ -1976,7 +1979,17 @@
         </div>
     </div>
 
-    <script src="mobile.js"></script>
+    <script>
+        if (window.innerWidth <= 768) {
+            var mobileScript = document.createElement('script');
+            mobileScript.src = 'mobile.js';
+            document.body.appendChild(mobileScript);
+        } else {
+            var mainScript = document.createElement('script');
+            mainScript.src = 'main.js';
+            document.body.appendChild(mainScript);
+        }
+    </script>
 
 
 </body>
