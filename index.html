@@ -1980,16 +1980,32 @@
     </div>
 
     <script>
-        if (window.innerWidth <= 768) {
-            var mobileScript = document.createElement('script');
-            mobileScript.src = 'mobile.js';
-            document.body.appendChild(mobileScript);
-        } else {
-            var mainScript = document.createElement('script');
-            mainScript.src = 'main.js';
-            document.body.appendChild(mainScript);
+        // Function to load the correct script based on screen size
+        function loadAppropriateScript() {
+            if (window.innerWidth <= 768) {
+                // Mobile view, load mobile.js
+                if (!document.querySelector('script[src="mobile.js"]')) {
+                    var mobileScript = document.createElement('script');
+                    mobileScript.src = 'mobile.js';
+                    document.body.appendChild(mobileScript);
+                }
+            } else {
+                // Desktop view, load main.js
+                if (!document.querySelector('script[src="main.js"]')) {
+                    var mainScript = document.createElement('script');
+                    mainScript.src = 'main.js';
+                    document.body.appendChild(mainScript);
+                }
+            }
         }
+
+        // Initial load
+        loadAppropriateScript();
+
+        // Update on window resize
+        window.addEventListener('resize', loadAppropriateScript);
     </script>
+
 
 
 </body>
