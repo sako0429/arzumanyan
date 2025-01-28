@@ -2286,6 +2286,25 @@
         function adjustTreePosition() {
             // Add logic here if tree alignment or position adjustment is needed
         }
+const widthCache = new WeakMap();
+
+function calculateTotalWidth(node) {
+    if (widthCache.has(node)) return widthCache.get(node);
+
+    const children = Array.from(node.children);
+    let totalWidth = 0;
+
+    children.forEach(child => {
+        const childBox = child.querySelector('.person');
+        if (childBox) totalWidth += childBox.offsetWidth;
+
+        const grandChildrenContainer = child.querySelector('ul');
+        if (grandChildrenContainer) totalWidth += calculateTotalWidth(grandChildrenContainer);
+    });
+
+    widthCache.set(node, totalWidth);
+    return totalWidth;
+}
     </script>
 
 </body>
