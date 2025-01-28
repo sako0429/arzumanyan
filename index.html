@@ -79,6 +79,7 @@
         .zoom-content {
             width: 100%;
             height: 100%;
+            transition: transform 0.2s ease-in-out;
         }
 
         /* Zoom controls */
@@ -235,6 +236,10 @@
         /* Responsive Design for Small Screens */
         @media (max-width: 768px) {
 
+            .zoom-controls {
+                display: none;
+            }
+
             .family-tree div.person {
                 height: 6em;
                 writing-mode: vertical-rl;
@@ -257,6 +262,10 @@
         }
 
         @media (max-width: 576px) {
+
+            .zoom-controls {
+                display: none;
+            }
 
             .family-tree div.person {
                 height: 6em;
