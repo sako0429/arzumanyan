@@ -42,6 +42,20 @@ body {
     font-weight: lighter;
 }
 
+.zoom-container {
+    overflow: visible;
+    /* Ensure content doesn't overflow */
+    width: 100%;
+    height: 100vh;
+    /* Or any specific height you'd like */
+    position: relative;
+    /* Relative positioning for scaling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+}
+
 
 .family-tree {
     position: absolute;
