@@ -2282,14 +2282,7 @@
             });
         }
 
-     function adjustTreePosition() {
-    const root = document.querySelector('.family-tree');
-    if (root) {
-        const { width } = root.getBoundingClientRect();
-        const screenWidth = window.innerWidth;
-        root.style.marginLeft = `${(screenWidth - width) / 2}px`;
-    }
-}
+     
 
 
 const widthCache = new WeakMap();
