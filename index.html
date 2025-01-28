@@ -2182,101 +2182,116 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.m').forEach(parent => {
-        parent.setAttribute('onclick', 'toggleBranch(this)');
-        updateChildrenCount(parent);
+    // Initialize the tree on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        // Attach toggleBranch and update child counts for all `.m` elements
+        document.querySelectorAll('.m').forEach(parent => {
+            parent.setAttribute('onclick', 'toggleBranch(this)');
+            updateChildrenCount(parent);
+        });
+
+        // Add generation numbers for all `.person` elements
+        document.querySelectorAll('.person').forEach(person => {
+            addGenerationNumber(person);
+        });
     });
 
-    document.querySelectorAll('.person').forEach(person => {
-        addGenerationNumber(person);
-    });
+    // Add generation number below each `.person`
+    function addGenerationNumber(person) {
+        const genClass = Array.from(person.classList).find(cls => cls.startsWith('gen'));
+        if (genClass) {
+            const generationNumber = genClass.replace('gen', ''); // Extract the number
+            if (!person.querySelector('.generation-number')) {
+                const genDiv = document.createElement('div');
+                genDiv.className = 'generation-number';
+                genDiv.textContent = `${generationNumber} gen`;
+                person.appendChild(genDiv);
+            }
+        }
+    }
+
+    // Update children count dynamically
+    function updateChildrenCount(parent) {
+        const childrenContainer = parent.nextElementSibling;
+        if (childrenContainer && childrenContainer.tagName === 'UL') {
+            const childrenCount = childrenContainer.children.length;
+            parent.style.setProperty('--children-count', `"${childrenCount}"`);
+        }
+    }
+
+    // Toggle the visibility of a branch
+    function toggleBranch(element) {
+        const childrenContainer = element.nextElementSibling;
+
+        if (childrenContainer && childrenContainer.tagName === 'UL') {
+            const isExpanded = childrenContainer.style.display === 'flex';
+
+            // Toggle display style
+            childrenContainer.style.display = isExpanded ? 'none' : 'flex';
+
+            // Toggle the expanded class
+            element.classList.toggle('expanded', !isExpanded);
+
+            // Adjust parent's width
+            if (!isExpanded) {
+                adjustParentSize(element, childrenContainer);
+            } else {
+                element.style.width = '';
+            }
+
+            // Adjust tree alignment after expansion
+            adjustTreePosition();
+        }
+    }
+
+    // Calculate total width for the parent element
+
+    function adjustParentSize(parent, childrenContainer) {
+if (childrenContainer) {
+    const totalWidth = calculateTotalWidth(childrenContainer);
+    parent.style.width = `${totalWidth * 1.2}px`; // Optional multiplier to add spacing
+}
+
+}
+
+function calculateTotalWidth(node) { if (widthCache.has(node)) return widthCache.get(node);
+
+const children = Array.from(node.children);
+let totalWidth = 0;
+
+children.forEach(child => {
+    const childBox = child.querySelector('.person');
+    if (childBox) {
+        // Get the computed style of the child box
+        const styles = window.getComputedStyle(childBox);
+
+        // Add the width of the child box
+        let childWidth = childBox.offsetWidth;
+
+        // Include margins, paddings, and borders
+        childWidth += parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
+        childWidth += parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+        childWidth += parseFloat(styles.borderLeftWidth) + parseFloat(styles.borderRightWidth);
+
+        totalWidth += childWidth;
+    }
+
+    // Recursively calculate the width for grandchildren
+    const grandChildrenContainer = child.querySelector('ul');
+    if (grandChildrenContainer) {
+        totalWidth += calculateTotalWidth(grandChildrenContainer);
+    }
 });
 
-function addGenerationNumber(person) {
-    const genClass = Array.from(person.classList).find(cls => cls.startsWith('gen'));
-    if (genClass) {
-        const generationNumber = genClass.replace('gen', '');
-        if (!person.querySelector('.generation-number')) {
-            const genDiv = document.createElement('div');
-            genDiv.className = 'generation-number';
-            genDiv.textContent = `${generationNumber} gen`;
-            person.appendChild(genDiv);
-        }
-    }
+// Cache the calculated width
+widthCache.set(node, totalWidth);
+return totalWidth;
+
 }
 
-function updateChildrenCount(parent) {
-    const childrenContainer = parent.nextElementSibling;
-    if (childrenContainer && childrenContainer.tagName === 'UL') {
-        const childrenCount = childrenContainer.children.length;
-        parent.style.setProperty('--children-count', `"${childrenCount}"`);
-    }
-}
-
-function toggleBranch(element) {
-    const childrenContainer = element.nextElementSibling;
-    if (!childrenContainer || childrenContainer.tagName !== 'UL') return;
-
-    const isExpanded = childrenContainer.style.display === 'flex';
-    const defaultDisplay = childrenContainer.dataset.defaultDisplay || 'flex';
-
-    requestAnimationFrame(() => {
-        childrenContainer.style.display = isExpanded ? 'none' : defaultDisplay;
-    });
-
-    element.classList.toggle('expanded', !isExpanded);
-
-    if (!isExpanded) {
-        adjustParentSize(element, childrenContainer);
-    } else {
-        element.style.width = '';
-    }
-
-    adjustTreePosition();
-}
-
-function adjustParentSize(parent, childrenContainer) {
-    if (childrenContainer) {
-        const totalWidth = calculateTotalWidth(childrenContainer);
-        parent.style.width = `${totalWidth * 1.2}px`;
-    }
-}
-
-const widthCache = new WeakMap();
-
-function calculateTotalWidth(node) {
-    if (widthCache.has(node)) return widthCache.get(node);
-
-    const children = Array.from(node.children);
-    let totalWidth = 0;
-
-    children.forEach(child => {
-        const childBox = child.querySelector('.person');
-        if (childBox) {
-            // Get the computed style of the child box
-            const styles = window.getComputedStyle(childBox);
-
-            // Start with the offsetWidth (includes padding and border)
-            let childWidth = childBox.offsetWidth;
-
-            // Add only margins (they're not included in offsetWidth)
-            childWidth += parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
-
-            totalWidth += childWidth;
-        }
-
-        // Recursively calculate the width for expanded grandchildren
-        const grandChildrenContainer = child.querySelector('ul');
-        if (grandChildrenContainer && grandChildrenContainer.style.display === 'flex') {
-            totalWidth += calculateTotalWidth(grandChildrenContainer);
-        }
-    });
-
-    widthCache.set(node, totalWidth);
-    return totalWidth;
-}
 </script>
+
+
 </body>
 
 </html>
