@@ -2246,7 +2246,6 @@ function adjustParentSize(parent, childrenContainer) {
 const widthCache = new WeakMap();
 
 function calculateTotalWidth(node) {
-    // Check if the width is cached
     if (widthCache.has(node)) return widthCache.get(node);
 
     const children = Array.from(node.children);
@@ -2258,35 +2257,25 @@ function calculateTotalWidth(node) {
             // Get the computed style of the child box
             const styles = window.getComputedStyle(childBox);
 
-            // Add the width of the child box
+            // Start with the offsetWidth (includes padding and border)
             let childWidth = childBox.offsetWidth;
 
-            // Include margins, paddings, and borders
+            // Add only margins (they're not included in offsetWidth)
             childWidth += parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
-            childWidth += parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-            childWidth += parseFloat(styles.borderLeftWidth) + parseFloat(styles.borderRightWidth);
 
             totalWidth += childWidth;
         }
 
-        // Check if the child has expanded descendants
+        // Recursively calculate the width for expanded grandchildren
         const grandChildrenContainer = child.querySelector('ul');
         if (grandChildrenContainer && grandChildrenContainer.style.display === 'flex') {
-            // Recursively calculate width for expanded grandchildren
             totalWidth += calculateTotalWidth(grandChildrenContainer);
         }
     });
 
-    // Cache the calculated width
     widthCache.set(node, totalWidth);
     return totalWidth;
 }
-
-function adjustTreePosition() {
-    // Placeholder for future tree alignment logic
-}
-
-    </script>
 
 </body>
 
