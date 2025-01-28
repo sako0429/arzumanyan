@@ -1,0 +1,280 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    background-color: #b5a99d;
+    overflow: hidden;
+}
+
+body,
+.zoom-container,
+.family-tree {
+    user-select: none;
+    -webkit-user-select: none;
+    /* For Safari */
+    -moz-user-select: none;
+    /* For Firefox */
+    -ms-user-select: none;
+    /* For Internet Explorer/Edge */
+}
+
+/* Navigation bar styling */
+.navbar {
+    position: absolute;
+    top: 5%;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+}
+
+.navbar h1 {
+    font-size: 1.5em;
+    margin: 0;
+    padding-left: 1em;
+    text-align: center;
+}
+
+.generation-number {
+    font-size: 1em;
+    text-align: start;
+    font-weight: lighter;
+    font-style: italic;
+}
+
+.children-count {
+    text-align: start;
+    font-weight: lighter;
+}
+
+.zoom-container {
+    overflow: hidden;
+    /* Ensure content doesn't overflow */
+    width: 100%;
+    height: 100vh;
+    /* Or any specific height you'd like */
+    position: relative;
+    /* Relative positioning for scaling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+}
+
+
+
+/* Zoom controls */
+.zoom-controls {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    /* Ensure it stays on top */
+}
+
+.zoom-in,
+.zoom-out {
+    width: 47px;
+    height: 47px;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #23deff;
+    border: 4px solid #ff0000;
+    border-radius: 50%;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.zoom-in:hover,
+.zoom-out:hover {
+    background-color: #ddd;
+}
+
+
+.family-tree {
+    position: absolute;
+    top: 15%;
+    text-align: center;
+    align-self: flex-start;
+    transition: transform 0.2s ease-in-out;
+}
+
+.family-tree ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+
+.family-tree ul ul {
+    display: none;
+    /* Hidden by default for interactivity */
+}
+
+.family-tree li {
+    text-align: center;
+    position: relative;
+    padding: 10px 0px;
+    margin: 5px;
+    list-style: none;
+}
+
+/* Box styles for persons */
+.family-tree div.person {
+    display: inline-block;
+    width: auto;
+    height: 6em;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px;
+    font-weight: bold;
+    position: relative;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    writing-mode: horizontal-tb;
+    /* Rotate text vertically */
+    text-orientation: mixed;
+    transition: width 0.3s ease, height 0.3s ease;
+    /* Smooth resizing */
+}
+
+.m {
+    border: 4px solid #2b40ff;
+}
+
+.f {
+    border: 4px solid #ff00ea;
+}
+
+.gen1 {
+    background-color: rgba(0, 228, 190, 0.534);
+}
+
+.gen2 {
+    background-color: rgba(200, 255, 0, 0.774);
+}
+
+.gen3 {
+    background-color: rgba(238, 0, 111, 0.507);
+}
+
+.gen4 {
+    background-color: rgba(32, 103, 255, 0.534);
+}
+
+.gen5 {
+    background-color: rgba(255, 49, 204, 0.774);
+}
+
+.gen6 {
+    background-color: rgba(255, 170, 58, 0.507);
+}
+
+.gen7 {
+    background-color: rgba(192, 32, 255, 0.534);
+}
+
+.gen8 {
+    background-color: rgb(255, 251, 37);
+}
+
+.gen9 {
+    background-color: rgba(117, 255, 63, 0.507);
+}
+
+.gen10 {
+    background-color: rgba(170, 255, 137, 0.911);
+}
+
+/* Expand/collapse toggle button */
+.m::after {
+    content: var(--children-count, '0');
+    position: absolute;
+    bottom: -14px;
+    right: -10px;
+    background: #69ff24;
+    color: #000000;
+    font-size: 14px;
+    width: 1.5em;
+    height: 1.5em;
+    border: 1px solid #333;
+    border-radius: 0% 50% 50% 50%;
+    line-height: 1.5em;
+    text-align: center;
+    cursor: pointer;
+}
+
+.person.expanded::after {
+    content: var(--children-count, '0');
+    background: #ff6924;
+}
+
+
+/* Responsive Design for Small Screens */
+@media (max-width: 768px) {
+
+
+    .zoom-controls {
+        display: none;
+    }
+
+    .family-tree div.person {
+        height: 6em;
+        writing-mode: vertical-rl;
+        display: inline-block;
+        margin: 2px;
+        /* Ensure proper resizing */
+    }
+
+    .family-tree li {
+        margin: 2px;
+        padding: 5px;
+        display: block;
+        /* Ensure each list item stacks vertically */
+    }
+
+    .family-tree ul ul {
+        display: none;
+        /* Default hidden for toggle functionality */
+    }
+}
+
+@media (max-width: 576px) {
+
+
+
+    .zoom-controls {
+        display: none;
+    }
+
+    .family-tree div.person {
+        height: 6em;
+        writing-mode: vertical-rl;
+        display: inline-block;
+        margin: 10px;
+        /* Ensure proper resizing */
+    }
+
+    .family-tree li {
+        margin: 10px;
+        padding: 15px;
+        display: block;
+        /* Ensure each list item stacks vertically */
+    }
+
+    .family-tree ul ul {
+        display: none;
+        /* Default hidden for toggle functionality */
+    }
+}
