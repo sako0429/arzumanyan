@@ -1980,31 +1980,20 @@
     </div>
 
     <script>
-        // Function to load the correct script based on screen size
-        function loadAppropriateScript() {
-            if (window.innerWidth <= 768) {
-                // Mobile view, load mobile.js
-                if (!document.querySelector('script[src="mobile.js"]')) {
-                    var mobileScript = document.createElement('script');
-                    mobileScript.src = 'mobile.js';
-                    document.body.appendChild(mobileScript);
-                }
-            } else {
-                // Desktop view, load main.js
-                if (!document.querySelector('script[src="main.js"]')) {
-                    var mainScript = document.createElement('script');
-                    mainScript.src = 'main.js';
-                    document.body.appendChild(mainScript);
-                }
-            }
+        // Check if the screen width is less than or equal to 768px (Mobile devices)
+        if (window.matchMedia("(max-width: 768px)").matches) {
+            // Load mobile.js
+            var mobileScript = document.createElement('script');
+            mobileScript.src = 'mobile.js';
+            document.body.appendChild(mobileScript);
+        } else {
+            // Load main.js for desktop
+            var mainScript = document.createElement('script');
+            mainScript.src = 'main.js';
+            document.body.appendChild(mainScript);
         }
-
-        // Initial load
-        loadAppropriateScript();
-
-        // Update on window resize
-        window.addEventListener('resize', loadAppropriateScript);
     </script>
+
 
 
 
