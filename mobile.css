@@ -179,7 +179,7 @@ body {
 
 
 /* Responsive Design for Small Screens */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 
     .zoom-controls {
         display: none;
