@@ -5,17 +5,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arzumanyan's Family Tree</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #b5a99d, #8c7b75);
+            color: white;
+            text-align: center;
+        }
+
+        .navbar {
+            position: absolute;
+            top: 5%;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            font-size: 1.5em;
+            margin: 0;
+            padding-left: 1em;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        /* Stylish buttons */
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.2em;
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            color: white;
+            width: 220px;
+            text-align: center;
+            position: relative;
+        }
+
+        .link-btn svg {
+            flex-shrink: 0;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            color: black;
+            transform: scale(1.05);
+        }
+
+        /* Highlight animation */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.9); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        }
+
+        .highlight {
+            animation: glow 1.5s infinite alternate ease-in-out;
+        }
+
+        /* Responsive for small screens */
+        @media (max-width: 600px) {
+            .link-btn {
+                font-size: 1em;
+                padding: 10px 20px;
+                width: 180px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div>
-        <!-- Link to desktop.html -->
-        <a href="desktop.html">Go to Desktop View</a>
+    <div class="navbar">
+        <h1>Խոջաբեկ գյուղի <br>Արզումանյան գերդաստանի տոհմածառ</h1>
     </div>
-    <div></div>
-        <!-- Link to desktop.html -->
-        <a href="mobile.html">Go to Mobile View</a>
+    <div class="container">
+        <a href="desktop.html" class="link-btn" id="desktop-btn">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                <path d="M2 3h20v14H2V3zm2 12h16V5H4v10zM1 20h22v2H1v-2z"></path>
+            </svg>
+            Համակարգիչների համար
+        </a>
+        <a href="mobile.html" class="link-btn" id="mobile-btn">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                <path
+                    d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm5 18a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z">
+                </path>
+            </svg>
+            Հեռախոսների համար
+        </a>
     </div>
+
+    <script>
+        // Detect if user is on a mobile device
+        function isMobileDevice() {
+            return /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent);
+        }
+
+        // Apply animation to the correct button
+        window.onload = function () {
+            if (isMobileDevice()) {
+                document.getElementById('mobile-btn').classList.add('highlight');
+            } else {
+                document.getElementById('desktop-btn').classList.add('highlight');
+            }
+        };
+    </script>
 </body>
 
 </html>
