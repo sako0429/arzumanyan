@@ -16,13 +16,13 @@
             align-items: center;
             height: 100dvh;
             background-color: #b5a99d;
-            overflow: hidden;
         }
 
         /* Navigation bar styling */
         .navbar {
             position: absolute;
-            top: 5%;
+            top: 0;
+            width: 100dvw;
             color: white;
             padding: 10px 20px;
             display: flex;
@@ -36,6 +36,25 @@
             margin: 0;
             padding-left: 1em;
             text-align: center;
+        }
+
+        .navbar button {
+            display: none;
+            padding: 1em 1em;
+            background-color: #ffffff;
+            color: rgb(255, 0, 0);
+            border: 1px solid rgb(0, 0, 255);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar button:hover {
+            color: rgb(0, 0, 255);
+            background-color: #b5a99d;
+            border: 1px dashed rgb(255, 0, 0);
+            transform: scale(0.95);
         }
 
         .generation-number {
@@ -52,10 +71,9 @@
 
         .family-tree {
             position: absolute;
-            top: 20%;
+            top: 15%;
             text-align: center;
             align-self: flex-start;
-            transition: transform 0.2s ease-in-out;
         }
 
         .family-tree ul {
@@ -169,68 +187,51 @@
             background: #ff6924;
         }
 
-        /* Mobile Styles for screens up to 768px */
+
+        /* Responsive Design for Small Screens */
         @media (max-width: 768px) {
 
-            .navbar {
-                font-size: 1.2em;
-                padding: 8px 15px;
-            }
-
             .family-tree div.person {
-                height: 5em;
-                width: 80%;
-                /* Adjust width on smaller screens */
+                height: 6em;
+                writing-mode: vertical-rl;
+                display: inline-block;
+                margin: 2px;
+                /* Ensure proper resizing */
             }
 
             .family-tree li {
-                margin: 4px;
-                padding: 8px;
+                margin: 2px;
+                padding: 5px;
+                display: block;
+                /* Ensure each list item stacks vertically */
             }
 
-            .generation-number {
-                font-size: 0.9em;
-            }
-
-            .children-count {
-                font-size: 0.9em;
-            }
-
-            /* Optional adjustments for any other specific mobile layout */
-            .family-tree {
-                top: 15%;
+            .family-tree ul ul {
+                display: none;
+                /* Default hidden for toggle functionality */
             }
         }
 
-        /* Mobile Styles for screens up to 576px */
         @media (max-width: 576px) {
 
-            .navbar {
-                font-size: 1em;
-                padding: 15px;
-            }
-
             .family-tree div.person {
-                height: 4em;
-                width: 90%;
-                /* Further adjustments for very small screens */
+                height: 6em;
+                writing-mode: vertical-rl;
+                display: inline-block;
+                margin: 10px;
+                /* Ensure proper resizing */
             }
 
             .family-tree li {
-                margin: 15px;
+                margin: 10px;
                 padding: 15px;
+                display: block;
+                /* Ensure each list item stacks vertically */
             }
 
-            .generation-number {
-                font-size: 0.8em;
-            }
-
-            .children-count {
-                font-size: 0.8em;
-            }
-
-            .family-tree {
-                top: 10%;
+            .family-tree ul ul {
+                display: none;
+                /* Default hidden for toggle functionality */
             }
         }
     </style>
@@ -241,6 +242,7 @@
 
     <div class="navbar">
         <h1>Խոջաբեկ գյուղի <br>Արզումանյան գերդաստանի տոհմածառ</h1>
+        <button onclick="expandAll()">Ցույց տալ բոլորը</button>
     </div>
 
     <div class="family-tree">
@@ -303,21 +305,18 @@
                                                         <div class="gen5 person m">Ջալալ - Սերո</div>
                                                         <ul>
                                                             <li>
-                                                                <div class="gen6 person m">Արարատ - Արմենուհի
-                                                                </div>
+                                                                <div class="gen6 person m">Արարատ - Արմենուհի</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Քաջայր</div>
                                                                     </li>
                                                                     <li>
-                                                                        <div class="gen7 person m">Հովհաննես
-                                                                        </div>
+                                                                        <div class="gen7 person m">Հովհաննես</div>
                                                                     </li>
                                                                 </ul>
                                                             </li>
                                                             <li>
-                                                                <div class="gen6 person m">Լարվենտ - Զեփյուռ
-                                                                </div>
+                                                                <div class="gen6 person m">Լարվենտ - Զեփյուռ</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Աշոտ</div>
@@ -326,14 +325,12 @@
                                                                         <div class="gen7 person m">Արտյոմ</div>
                                                                     </li>
                                                                     <li>
-                                                                        <div class="gen7 person m">Անդրանիկ
-                                                                        </div>
+                                                                        <div class="gen7 person m">Անդրանիկ</div>
                                                                     </li>
                                                                 </ul>
                                                             </li>
                                                             <li>
-                                                                <div class="gen6 person m">Արմեն - Հայկանուշ
-                                                                </div>
+                                                                <div class="gen6 person m">Արմեն - Հայկանուշ</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Ջալալ</div>
@@ -349,8 +346,7 @@
                                                                 <div class="gen6 person f">Սաթենիկ</div>
                                                             </li>
                                                             <li>
-                                                                <div class="gen6 person m">Մամիկոն - Գյուլնարա
-                                                                </div>
+                                                                <div class="gen6 person m">Մամիկոն - Գյուլնարա</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Մհեր</div>
@@ -370,8 +366,7 @@
                                                                         <div class="gen7 person f">Ժենիկ</div>
                                                                     </li>
                                                                     <li>
-                                                                        <div class="gen7 person m">Մերուժան
-                                                                        </div>
+                                                                        <div class="gen7 person m">Մերուժան</div>
                                                                     </li>
                                                                 </ul>
                                                             </li>
@@ -393,8 +388,7 @@
                                                                 <div class="gen6 person m">Քաջայր</div>
                                                             </li>
                                                             <li>
-                                                                <div class="gen6 person m">Մամիկոն - Անահիտ
-                                                                </div>
+                                                                <div class="gen6 person m">Մամիկոն - Անահիտ</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Վոլոդյա</div>
@@ -411,8 +405,7 @@
                                                                 <div class="gen6 person f">Լյուդմիլա</div>
                                                             </li>
                                                             <li>
-                                                                <div class="gen6 person m">Սարգիս - Շուշանիկ
-                                                                </div>
+                                                                <div class="gen6 person m">Սարգիս - Շուշանիկ</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person f">Անուշիկ</div>
@@ -456,8 +449,7 @@
                                                                 </ul>
                                                             </li>
                                                             <li>
-                                                                <div class="gen6 person m">Գուրգեն - Մանուշակ
-                                                                </div>
+                                                                <div class="gen6 person m">Գուրգեն - Մանուշակ</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Գևորգ</div>
@@ -548,8 +540,7 @@
                                                                 <div class="gen6 person m">Անդրանիկ - Վիկա</div>
                                                                 <ul>
                                                                     <li>
-                                                                        <div class="gen7 person f">Վարդիթեր
-                                                                        </div>
+                                                                        <div class="gen7 person f">Վարդիթեր</div>
                                                                     </li>
                                                                 </ul>
                                                             </li>
@@ -589,8 +580,7 @@
                                                         <div class="gen5 person m">Լևոն - Շամամ</div>
                                                         <ul>
                                                             <li>
-                                                                <div class="gen6 person m">Մարտին - Անիվարդ
-                                                                </div>
+                                                                <div class="gen6 person m">Մարտին - Անիվարդ</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Լևոն</div>
@@ -610,7 +600,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="gen5 person f">Միշկինազ</div>
-                                                    </li>
+                                                    </li> 
                                                     <li>
                                                         <div class="gen5 person m">Լյուդվիգ - Ժասմեն</div>
                                                         <ul>
@@ -627,8 +617,7 @@
                                                                         <div class="gen7 person m">Արման</div>
                                                                     </li>
                                                                     <li>
-                                                                        <div class="gen7 person m">Լյուդվիգ
-                                                                        </div>
+                                                                        <div class="gen7 person m">Լյուդվիգ</div>
                                                                     </li>
                                                                     <li>
                                                                         <div class="gen7 person m">Շավարշ</div>
@@ -699,8 +688,7 @@
                                                         <div class="gen5 person m">Լարվենտ - Շաղիկ</div>
                                                         <ul>
                                                             <li>
-                                                                <div class="gen6 person m">Կարեն - Շուշանիկ
-                                                                </div>
+                                                                <div class="gen6 person m">Կարեն - Շուշանիկ</div>
                                                                 <ul>
                                                                     <li>
                                                                         <div class="gen7 person m">Հակոբ</div>
@@ -1456,13 +1444,10 @@
                                                                 <div class="gen6 person m">Վիկտոր - Լիաննա</div>
                                                                 <ul>
                                                                     <li>
-                                                                        <div class="gen7 person m">Ալբերտ - Նառա
-                                                                        </div>
+                                                                        <div class="gen7 person m">Ալբերտ - Նառա</div>
                                                                         <ul>
                                                                             <li>
-                                                                                <div class="gen8 person m">
-                                                                                    Վիկտոր
-                                                                                </div>
+                                                                                <div class="gen8 person m">Վիկտոր</div>
                                                                             </li>
                                                                         </ul>
                                                                     </li>
@@ -1769,23 +1754,23 @@
                                                     <li>
                                                         <div class="gen5 person m">Գրիգոր - Աիդա</div>
                                                         <ul>
-                                                            <li>
-                                                                <div class="gen6 person m">Այվազ</div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="gen6 person m">Գարիկ</div>
-                                                            </li>
+                                                        <li>
+                                                            <div class="gen6 person m">Այվազ</div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="gen6 person m">Գարիկ</div>
+                                                        </li>
                                                         </ul>
                                                     </li>
                                                     <li>
                                                         <div class="gen5 person m">Արզուման - Գոհարիկ</div>
                                                         <ul>
-                                                            <li>
-                                                                <div class="gen6 person m">Արման</div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="gen6 person f">Ամալյա</div>
-                                                            </li>
+                                                        <li>
+                                                            <div class="gen6 person m">Արման</div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="gen6 person f">Ամալյա</div>
+                                                        </li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -2035,8 +2020,7 @@
                                                                 <div class="gen6 person m">Գրիգոր - Զինա</div>
                                                                 <ul>
                                                                     <li>
-                                                                        <div class="gen7 person f">Անժելիկա
-                                                                        </div>
+                                                                        <div class="gen7 person f">Անժելիկա</div>
                                                                     </li>
                                                                 </ul>
                                                             </li>
@@ -2195,23 +2179,24 @@
                 </ul>
             </li>
         </ul>
-
     </div>
 
     <script>
-
         // Initialize the tree on page load
-        document.querySelectorAll('.m').forEach(parent => {
-            parent.setAttribute('onclick', 'toggleBranch(this)');
-            updateChildrenCount(parent);
+        document.addEventListener("DOMContentLoaded", () => {
+            // Attach toggleBranch and update child counts for all `.m` elements
+            document.querySelectorAll('.m').forEach(parent => {
+                parent.setAttribute('onclick', 'toggleBranch(this)');
+                updateChildrenCount(parent);
+            });
+
+            // Add generation numbers for all `.person` elements
+            document.querySelectorAll('.person').forEach(person => {
+                addGenerationNumber(person);
+            });
         });
 
-        document.querySelectorAll('.person').forEach(person => {
-            addGenerationNumber(person);
-        });
-
-        const widthCache = new Map(); // Cache for storing width calculations
-
+        // Add generation number below each `.person`
         function addGenerationNumber(person) {
             const genClass = Array.from(person.classList).find(cls => cls.startsWith('gen'));
             if (genClass) {
@@ -2225,6 +2210,7 @@
             }
         }
 
+        // Update children count dynamically
         function updateChildrenCount(parent) {
             const childrenContainer = parent.nextElementSibling;
             if (childrenContainer && childrenContainer.tagName === 'UL') {
@@ -2233,6 +2219,7 @@
             }
         }
 
+        // Toggle the visibility of a branch
         function toggleBranch(element) {
             const childrenContainer = element.nextElementSibling;
 
@@ -2245,11 +2232,11 @@
                 // Toggle the expanded class
                 element.classList.toggle('expanded', !isExpanded);
 
-                // Adjust parent's width based on expanded children only
+                // Adjust parent's width
                 if (!isExpanded) {
                     adjustParentSize(element, childrenContainer);
                 } else {
-                    element.style.width = ''; // Reset the parent's width if collapsed
+                    element.style.width = '';
                 }
 
                 // Adjust tree alignment after expansion
@@ -2257,49 +2244,47 @@
             }
         }
 
-        // Adjust parent element size based on total width of only visible children
+        // Calculate total width for the parent element
         function adjustParentSize(parent, childrenContainer) {
+            function calculateTotalWidth(node) {
+                const children = Array.from(node.children);
+                let totalWidth = 0;
+
+                children.forEach(child => {
+                    const childBox = child.querySelector('.person');
+                    if (childBox) {
+                        totalWidth += childBox.offsetWidth;
+                    }
+                    const grandChildrenContainer = child.querySelector('ul');
+                    if (grandChildrenContainer) {
+                        totalWidth += calculateTotalWidth(grandChildrenContainer);
+                    }
+                });
+
+                return totalWidth;
+            }
+
             if (childrenContainer) {
-                const totalWidth = calculateTotalWidthForVisibleChildren(childrenContainer);
-                parent.style.width = `${totalWidth * 1.2}px`; // Optional multiplier to add spacing
+                const totalWidth = calculateTotalWidth(childrenContainer);
+                parent.style.width = `${totalWidth*1.2}px`;
             }
         }
 
-        // Recursively calculate the total width of only visible children
-        function calculateTotalWidthForVisibleChildren(node) {
-            let totalWidth = 0;
-
-            const children = Array.from(node.children);
-            children.forEach(child => {
-                const childBox = child.querySelector('.person');
-                if (childBox) {
-                    // Check if the child (and its descendants) are visible
-                    const isVisible = child.style.display !== 'none' && child.offsetHeight > 0;
-
-                    if (isVisible) {
-                        // Get the computed style of the child box
-                        const styles = window.getComputedStyle(childBox);
-
-                        // Add the width of the child box
-                        let childWidth = childBox.offsetWidth;
-
-                        // Include margins, paddings, and borders
-                        childWidth += parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
-                        childWidth += parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-                        childWidth += parseFloat(styles.borderLeftWidth) + parseFloat(styles.borderRightWidth);
-
-                        totalWidth += childWidth;
-                    }
-                }
-
-                // Recursively calculate the width for visible grandchildren
-                const grandChildrenContainer = child.querySelector('ul');
-                if (grandChildrenContainer) {
-                    totalWidth += calculateTotalWidthForVisibleChildren(grandChildrenContainer);
+        // Expand all branches
+        function expandAll() {
+            document.querySelectorAll('.m').forEach(parent => {
+                const childrenContainer = parent.nextElementSibling;
+                if (childrenContainer && childrenContainer.tagName === 'UL') {
+                    childrenContainer.style.display = 'flex';
+                    parent.classList.add('expanded');
+                    adjustParentSize(parent, childrenContainer);
                 }
             });
+        }
 
-            return totalWidth;
+        // Adjust tree position (optional placeholder for future functionality)
+        function adjustTreePosition() {
+            // Add logic here if tree alignment or position adjustment is needed
         }
     </script>
 
