@@ -16,12 +16,15 @@
             align-items: center;
             height: 100dvh;
             background-color: #b5a99d;
-            overflow: hidden;
+            overflow: auto;
         }
+
 
         body,
         .zoom-container,
         .family-tree {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
             user-select: none;
             -webkit-user-select: none;
             /* For Safari */
@@ -33,7 +36,7 @@
 
         /* Navigation bar styling */
         .navbar {
-            position: absolute;
+            position: fixed;
             top: 5%;
             color: white;
             padding: 10px 20px;
@@ -63,7 +66,7 @@
         }
 
         .zoom-container {
-            overflow: hidden;
+            overflow: visible;
             /* Ensure content doesn't overflow */
             width: 100%;
             height: 100vh;
@@ -74,15 +77,16 @@
             justify-content: center;
             align-items: center;
             cursor: grab;
+            scroll-behavior: smooth;
         }
 
 
 
         /* Zoom controls */
         .zoom-controls {
-            position: absolute;
+            position: fixed;
             bottom: 30px;
-            left: 30px;
+            right: 30px;
             display: flex;
             flex-direction: column;
             z-index: 10;
@@ -90,9 +94,10 @@
         }
 
         .zoom-in,
-        .zoom-out {
-            width: 47px;
-            height: 47px;
+        .zoom-out,
+        .zoom-off {
+            width: 4em;
+            height: 4em;
             padding: 10px;
             font-size: 18px;
             background-color: #23deff;
@@ -103,18 +108,20 @@
         }
 
         .zoom-in:hover,
-        .zoom-out:hover {
+        .zoom-out:hover,
+        .zoom-off:hover {
             background-color: #ddd;
         }
 
 
         .family-tree {
-            position: absolute;
+            scroll-behavior: smooth;
+            position: relative;
             top: 15%;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
-            align-self: flex-start;
+            align-self: center;
             transition: transform 0.2s ease-in-out;
         }
 
@@ -154,7 +161,7 @@
             cursor: pointer;
             writing-mode: horizontal-tb;
             /* Rotate text vertically */
-            text-orientation: mixed;
+            /*text-orientation: mixed;
             transition: width 0.3s ease, height 0.3s ease;
             /* Smooth resizing */
         }
@@ -244,8 +251,8 @@
                 <ul>
                     <li>
                         <div class="person m"
-                            style="writing-mode: horizontal-tb; background: #ff4b4b; font-size: x-large; height: 4em;">
-                            Կոստան Արզումանյան<br>1828/30_ական թվականներից <br>Քոշք - - - - Խոջաբեկ</div>
+                            style="writing-mode: horizontal-tb; background: #ff4b4b; height: 4em; width: 18em;">
+                            Կոստան Արզումանյան<br>1828/30_ական թվականներից<br>Քոշք > > > > Խոջաբեկ</div>
                         <ul>
                             <li>
                                 <div class="gen1 person m">Հովհաննես</div>
@@ -2197,14 +2204,51 @@
         <div class="zoom-controls">
             <button class="zoom-in">+</button>
             <button class="zoom-out">-</button>
+            <button class="zoom-off">0</button>
         </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.person').forEach(function (person) {
+                person.addEventListener('click', function () {
+                    // Get the position of the clicked person
+                    const personRect = person.getBoundingClientRect();
+
+                    // Calculate the center of the person's box
+                    const personCenterX = personRect.left + personRect.width / 2;
+                    const personCenterY = personRect.top + personRect.height / 2;
+
+                    // Calculate the center of the viewport
+                    const viewportCenterX = window.innerWidth / 2;
+                    const viewportCenterY = window.innerHeight / 2;
+
+                    // Calculate the scroll offset to center the person
+                    const offsetX = personCenterX - viewportCenterX;
+                    const offsetY = personCenterY - viewportCenterY;
+
+                    // Scroll the viewport to center the person
+                    window.scrollBy({
+                        left: offsetX,
+                        top: offsetY,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
             const zoomInButton = document.querySelector('.zoom-in');
             const zoomOutButton = document.querySelector('.zoom-out');
             const zoomContent = document.querySelector('.zoom-content');
+            const zoomOffButton = document.querySelector('.zoom-off');
 
             let scale = 1;  // Initial zoom scale
             const zoomSpeed = 0.1;
@@ -2221,10 +2265,15 @@
                 applyZoom();
             });
 
+            zoomOffButton.addEventListener('click', () => {
+                scale = 1;
+                applyZoom();
+            });
+
             function applyZoom() {
                 // Apply scale to the .zoom-content (the part you want zoomed)
                 zoomContent.style.transform = `scale(${scale})`;
-                zoomContent.style.transformOrigin = 'top left';  // Keep the top-left corner fixed
+                //zoomContent.style.transformOrigin = 'top left';  // Keep the top-left corner fixed
                 zoomContent.style.transition = 'transform 0.2s ease';  // Smooth zoom transition
             }
         });
@@ -2267,6 +2316,10 @@
                 zoomContainer.style.cursor = 'grab'; // Change cursor back to normal
             });
         });
+
+
+
+
 
         // Initialize the tree on page load
         document.querySelectorAll('.m').forEach(parent => {
