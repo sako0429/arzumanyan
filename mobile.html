@@ -97,6 +97,21 @@
             list-style: none;
         }
 
+        .family-tree li::before {
+            content: "";
+            position: absolute;
+            top: 70px;
+            left: -12px;
+            width: 14px;
+            height: 4px;
+            background-color: rgb(255, 255, 255);
+        }
+
+        /* Remove top vertical line for first child */
+        .family-tree ul>li:first-child::before {
+            display: none;
+        }
+
         /* Box styles for persons */
         .family-tree div.person {
             display: inline-block;
@@ -165,8 +180,9 @@
         }
 
         /* Expand/collapse toggle button */
-        .m::after {
-            content: var(--children-count, '0');
+        .m::after,
+        .f::after {
+            content: var(--children-count, '');
             position: absolute;
             bottom: -14px;
             right: -10px;
@@ -183,7 +199,7 @@
         }
 
         .person.expanded::after {
-            content: var(--children-count, '0');
+            content: var(--children-count, '');
             background: #ff6924;
         }
 
@@ -2184,7 +2200,7 @@
         // Initialize the tree on page load
         document.addEventListener("DOMContentLoaded", () => {
             // Attach toggleBranch and update child counts for all `.m` elements
-            document.querySelectorAll('.m').forEach(parent => {
+            document.querySelectorAll('.person').forEach(parent => {
                 parent.setAttribute('onclick', 'toggleBranch(this)');
                 updateChildrenCount(parent);
             });

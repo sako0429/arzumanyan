@@ -129,8 +129,8 @@
             list-style-type: none;
             display: flex;
             justify-content: center;
+            position: relative;
         }
-
 
         .family-tree ul ul {
             display: none;
@@ -143,6 +143,21 @@
             padding: 10px 0px;
             margin: 5px;
             list-style: none;
+        }
+
+        .family-tree li::before {
+            content: "";
+            position: absolute;
+            top: 70px;
+            left: -10px;
+            width: 10px;
+            height: 2px;
+            background-color: black;
+        }
+
+        /* Remove top vertical line for first child */
+        .family-tree ul>li:first-child::before {
+            display: none;
         }
 
         /* Box styles for persons */
@@ -213,8 +228,9 @@
         }
 
         /* Expand/collapse toggle button */
-        .m::after {
-            content: var(--children-count, '0');
+        .m::after,
+        .f::after {
+            content: var(--children-count, '');
             position: absolute;
             bottom: -14px;
             right: -10px;
@@ -231,7 +247,7 @@
         }
 
         .person.expanded::after {
-            content: var(--children-count, '0');
+            content: var(--children-count, '');
             background: #ff6924;
         }
     </style>
@@ -2207,6 +2223,9 @@
     </div>
 
     <script>
+
+        // Centering
+
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll('.person').forEach(function (person) {
                 person.addEventListener('click', function () {
@@ -2235,12 +2254,7 @@
             });
         });
 
-
-
-
-
-
-
+        // Zooming
 
         document.addEventListener("DOMContentLoaded", () => {
             const zoomInButton = document.querySelector('.zoom-in');
@@ -2275,6 +2289,8 @@
                 zoomContent.style.transition = 'transform 0.2s ease';  // Smooth zoom transition
             }
         });
+
+        // Drag and Moving
 
         document.addEventListener("DOMContentLoaded", () => {
             const zoomContainer = document.querySelector('.zoom-container');
@@ -2316,11 +2332,8 @@
         });
 
 
-
-
-
         // Initialize the tree on page load
-        document.querySelectorAll('.m').forEach(parent => {
+        document.querySelectorAll('.person').forEach(parent => {
             parent.setAttribute('onclick', 'toggleBranch(this)');
             updateChildrenCount(parent);
         });
@@ -2330,6 +2343,9 @@
         });
 
         const widthCache = new Map(); // Cache for storing width calculations
+
+
+        // Gen adding
 
         function addGenerationNumber(person) {
             const genClass = Array.from(person.classList).find(cls => cls.startsWith('gen'));
@@ -2344,6 +2360,8 @@
             }
         }
 
+        // Children count
+
         function updateChildrenCount(parent) {
             const childrenContainer = parent.nextElementSibling;
             if (childrenContainer && childrenContainer.tagName === 'UL') {
@@ -2351,6 +2369,7 @@
                 parent.style.setProperty('--children-count', `"${childrenCount}"`);
             }
         }
+
 
         function toggleBranch(element) {
             const childrenContainer = element.nextElementSibling;
@@ -2364,25 +2383,32 @@
                 // Toggle the expanded class
                 element.classList.toggle('expanded', !isExpanded);
 
-                // Adjust parent's width based on expanded children only
-                if (!isExpanded) {
-                    adjustParentSize(element, childrenContainer);
-                } else {
-                    element.style.width = ''; // Reset the parent's width if collapsed
-                }
+                // Adjust parent's width dynamically
+                updateParentSize(element);
+                updateGrandparentSize(element);
 
                 // Adjust tree alignment after expansion
                 adjustTreePosition();
             }
         }
 
-        // Adjust parent element size based on total width of only visible children
-        function adjustParentSize(parent, childrenContainer) {
-            if (childrenContainer) {
-                const totalWidth = calculateTotalWidthForVisibleChildren(childrenContainer);
-                parent.style.width = `${totalWidth * 1.2}px`; // Optional multiplier to add spacing
+
+        // Ensure the parent resizes dynamically based on visible children
+        function updateParentSize(parent) {
+            const childrenContainer = parent.nextElementSibling;
+
+            if (childrenContainer && childrenContainer.tagName === 'UL') {
+                if (childrenContainer.style.display === 'none') {
+                    // Reset width when collapsing
+                    parent.style.width = '';
+                } else {
+                    // Calculate and apply new width when expanding
+                    const totalWidth = calculateTotalWidthForVisibleChildren(childrenContainer);
+                    parent.style.width = `${totalWidth * 1}px`; // Ensure proper spacing
+                }
             }
         }
+
 
         // Recursively calculate the total width of only visible children
         function calculateTotalWidthForVisibleChildren(node) {
@@ -2418,8 +2444,39 @@
                 }
             });
 
+            
+
             return totalWidth;
         }
+
+
+        function updateGrandparentSize(parent) {
+            const previousUl = parent.previousElementSibling;
+
+            if (previousUl && previousUl.tagName === 'UL') {
+                // Find the parent of the current parent (grandparent)
+                const grandparent = previousUl.previousElementSibling;
+
+                if (grandparent && grandparent.classList.contains('person')) {
+                    updateParentSize(grandparent); // Update the grandparent size
+                }
+            }
+        }
+
+
+        function adjustTreePosition() {
+            // Check if the tree needs any adjustment after the branch toggle
+            // You can adjust the scroll position, or align elements
+            const familyTree = document.querySelector('.family-tree');
+
+            // Example: Recalculate position or scroll to the top of the tree
+            familyTree.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        }
+
+
     </script>
 
 
