@@ -2263,12 +2263,7 @@
                 // Toggle the expanded class
                 element.classList.toggle('expanded', !isExpanded);
 
-                // Adjust parent's width
-                if (!isExpanded) {
-                    adjustParentSize(element, childrenContainer);
-                } else {
-                    element.style.width = '';
-                }
+
 
                 // Adjust width calculations
                 updateParentWidth(element);
