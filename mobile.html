@@ -255,7 +255,7 @@
             }
 
             .family-tree li {
-                margin: 10px;
+                margin: 5px;
                 padding: 15px;
                 display: block;
                 /* Ensure each list item stacks vertically */
@@ -264,6 +264,11 @@
             .family-tree ul ul {
                 display: none;
                 /* Default hidden for toggle functionality */
+            }
+
+            .family-tree li::before {
+                top: 90px;
+                left: -15px
             }
         }
     </style>
@@ -2285,7 +2290,6 @@
             });
         }
 
-        // Calculate total width for the parent element
         function updateParentWidth(element) {
             let parent = element.closest('li'); // Find the parent <li> containing this person
             if (!parent) return;
@@ -2298,6 +2302,14 @@
 
                 children.forEach(child => {
                     let childWidth = child.offsetWidth;
+
+                    // Get the computed style for margins and padding
+                    let style = window.getComputedStyle(child);
+                    let marginLeft = parseInt(style.marginLeft);
+                    let marginRight = parseInt(style.marginRight);
+                    let paddingLeft = parseInt(style.paddingLeft);
+                    let paddingRight = parseInt(style.paddingRight);
+
                     if (child.classList.contains('expanded')) {
                         let childContainer = child.nextElementSibling;
                         if (childContainer && childContainer.tagName === 'UL') {
@@ -2306,18 +2318,27 @@
                             childWidth = Math.max(childWidth, expandedWidth);
                         }
                     }
+
+                    // Add margins and padding to child width
+                    childWidth += marginLeft + marginRight + paddingLeft + paddingRight;
+
                     totalWidth += childWidth;
                 });
             }
 
-            element.style.width = totalWidth * 1.2 + 'px';
+            // Ensure the node does not shrink below its default width
+            const defaultWidth = 100; // Adjust based on your CSS
+            totalWidth = Math.max(totalWidth, defaultWidth);
 
-            // Propagate the width update to ancestors
+            element.style.width = totalWidth * 1.1 + 'px';
+
+            // Propagate width changes up the tree
             let grandparent = parent.closest('ul')?.previousElementSibling;
             if (grandparent && grandparent.classList.contains('person')) {
                 updateParentWidth(grandparent);
             }
         }
+
 
 
     </script>
