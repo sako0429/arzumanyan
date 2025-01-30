@@ -7,25 +7,24 @@
     <title>Arzumanyan's Family Tree</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             margin: 0;
-            padding: 0;
-            height: 100vh;
+            padding: 20px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: url('w.jpg') no-repeat center center fixed;
-            background-size: cover;
-            /* Ensures the image covers the whole page */
-            color: rgb(68, 68, 68);
-            text-align: center;
-            position: relative;
+            height: 100dvh;
+            background-color: #b5a99d;
         }
 
+        /* Navigation bar styling */
         .navbar {
-            position: fixed;
+            position: absolute;
             top: 0;
-            padding: 20px 20px;
+            width: 100dvw;
+            color: white;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -33,11 +32,10 @@
         }
 
         .navbar h1 {
-            font-size: 2em;
-            font-style: oblique;
-            line-height: 150%;
+            font-size: 1.5em;
+            margin: 0;
+            padding-left: 1em;
             text-align: center;
-            color: rgb(255, 0, 0);
         }
 
         .navbar button {
