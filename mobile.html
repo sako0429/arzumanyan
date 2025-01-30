@@ -180,13 +180,29 @@
         }
 
         /* Expand/collapse toggle button */
-        .m::after,
-        .f::after {
+        .m::after {
             content: var(--children-count, '');
             position: absolute;
             bottom: -14px;
             right: -10px;
             background: #69ff24;
+            color: #000000;
+            font-size: 14px;
+            width: 1.5em;
+            height: 1.5em;
+            border: 1px solid #333;
+            border-radius: 0% 50% 50% 50%;
+            line-height: 1.5em;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .f::after {
+            content: var(--children-count, '');
+            position: absolute;
+            bottom: -14px;
+            right: -10px;
+            background: #e6ffdb;
             color: #000000;
             font-size: 14px;
             width: 1.5em;
@@ -615,7 +631,7 @@
                                                     </li>
                                                     <li>
                                                         <div class="gen5 person f">Միշկինազ</div>
-                                                    </li> 
+                                                    </li>
                                                     <li>
                                                         <div class="gen5 person m">Լյուդվիգ - Ժասմեն</div>
                                                         <ul>
@@ -1769,23 +1785,23 @@
                                                     <li>
                                                         <div class="gen5 person m">Գրիգոր - Աիդա</div>
                                                         <ul>
-                                                        <li>
-                                                            <div class="gen6 person m">Այվազ</div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="gen6 person m">Գարիկ</div>
-                                                        </li>
+                                                            <li>
+                                                                <div class="gen6 person m">Այվազ</div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="gen6 person m">Գարիկ</div>
+                                                            </li>
                                                         </ul>
                                                     </li>
                                                     <li>
                                                         <div class="gen5 person m">Արզուման - Գոհարիկ</div>
                                                         <ul>
-                                                        <li>
-                                                            <div class="gen6 person m">Արման</div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="gen6 person f">Ամալյա</div>
-                                                        </li>
+                                                            <li>
+                                                                <div class="gen6 person m">Արման</div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="gen6 person f">Ամալյա</div>
+                                                            </li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -2254,53 +2270,61 @@
                     element.style.width = '';
                 }
 
+                // Adjust width calculations
+                updateParentWidth(element);
+
                 // Adjust tree alignment after expansion
                 adjustTreePosition();
             }
         }
 
-        // Calculate total width for the parent element
-        function adjustParentSize(parent, childrenContainer) {
-            function calculateTotalWidth(node) {
-                const children = Array.from(node.children);
-                let totalWidth = 0;
+        function adjustTreePosition() {
+            // Check if the tree needs any adjustment after the branch toggle
+            // You can adjust the scroll position, or align elements
+            const familyTree = document.querySelector('.family-tree');
 
-                children.forEach(child => {
-                    const childBox = child.querySelector('.person');
-                    if (childBox) {
-                        totalWidth += childBox.offsetWidth;
-                    }
-                    const grandChildrenContainer = child.querySelector('ul');
-                    if (grandChildrenContainer) {
-                        totalWidth += calculateTotalWidth(grandChildrenContainer);
-                    }
-                });
-
-                return totalWidth;
-            }
-
-            if (childrenContainer) {
-                const totalWidth = calculateTotalWidth(childrenContainer);
-                parent.style.width = `${totalWidth*1.2}px`;
-            }
-        }
-
-        // Expand all branches
-        function expandAll() {
-            document.querySelectorAll('.m').forEach(parent => {
-                const childrenContainer = parent.nextElementSibling;
-                if (childrenContainer && childrenContainer.tagName === 'UL') {
-                    childrenContainer.style.display = 'flex';
-                    parent.classList.add('expanded');
-                    adjustParentSize(parent, childrenContainer);
-                }
+            // Example: Recalculate position or scroll to the top of the tree
+            familyTree.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
             });
         }
 
-        // Adjust tree position (optional placeholder for future functionality)
-        function adjustTreePosition() {
-            // Add logic here if tree alignment or position adjustment is needed
+        // Calculate total width for the parent element
+        function updateParentWidth(element) {
+            let parent = element.closest('li'); // Find the parent <li> containing this person
+            if (!parent) return;
+
+            let childrenContainer = parent.querySelector('ul');
+            let totalWidth = 0;
+
+            if (childrenContainer) {
+                let children = childrenContainer.querySelectorAll(':scope > li > .person');
+
+                children.forEach(child => {
+                    let childWidth = child.offsetWidth;
+                    if (child.classList.contains('expanded')) {
+                        let childContainer = child.nextElementSibling;
+                        if (childContainer && childContainer.tagName === 'UL') {
+                            let expandedWidth = Array.from(childContainer.children)
+                                .reduce((sum, li) => sum + li.querySelector('.person').offsetWidth, 0);
+                            childWidth = Math.max(childWidth, expandedWidth);
+                        }
+                    }
+                    totalWidth += childWidth;
+                });
+            }
+
+            element.style.width = totalWidth * 1.2 + 'px';
+
+            // Propagate the width update to ancestors
+            let grandparent = parent.closest('ul')?.previousElementSibling;
+            if (grandparent && grandparent.classList.contains('person')) {
+                updateParentWidth(grandparent);
+            }
         }
+
+
     </script>
 
 </body>
