@@ -8,14 +8,16 @@
     <style>
         /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #b5a99d, #8c7b75);
+            background: url('w.jpg') no-repeat center center fixed;
+            background-size: cover;
+            /* Ensures the image covers the whole page */
             color: white;
             text-align: center;
         }
@@ -23,7 +25,7 @@
         .navbar {
             position: absolute;
             top: 5%;
-            color: white;
+            color: rgb(255, 0, 0);
             padding: 10px 20px;
             display: flex;
             justify-content: space-around;
@@ -32,7 +34,9 @@
         }
 
         .navbar h1 {
-            font-size: 1.5em;
+            font-size: 2em;
+            font-style: oblique;
+            line-height: 150%;
             margin: 0;
             padding-left: 1em;
             text-align: center;
@@ -41,6 +45,8 @@
         .container {
             display: flex;
             flex-direction: column;
+            position: fixed;
+            bottom: 0;
             gap: 50px;
         }
 

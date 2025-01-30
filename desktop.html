@@ -228,13 +228,29 @@
         }
 
         /* Expand/collapse toggle button */
-        .m::after,
-        .f::after {
+        .m::after {
             content: var(--children-count, '');
             position: absolute;
             bottom: -14px;
             right: -10px;
             background: #69ff24;
+            color: #000000;
+            font-size: 14px;
+            width: 1.5em;
+            height: 1.5em;
+            border: 1px solid #333;
+            border-radius: 0% 50% 50% 50%;
+            line-height: 1.5em;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .f::after {
+            content: var(--children-count, '');
+            position: absolute;
+            bottom: -14px;
+            right: -10px;
+            background: #f1ffeb;
             color: #000000;
             font-size: 14px;
             width: 1.5em;
@@ -2222,6 +2238,9 @@
         </div>
     </div>
 
+
+
+
     <script>
 
         // Centering
@@ -2383,83 +2402,12 @@
                 // Toggle the expanded class
                 element.classList.toggle('expanded', !isExpanded);
 
-                // Adjust parent's width dynamically
-                updateParentSize(element);
-                updateGrandparentSize(element);
+
+                // Adjust width calculations
+                updateParentWidth(element);
 
                 // Adjust tree alignment after expansion
                 adjustTreePosition();
-            }
-        }
-
-
-        // Ensure the parent resizes dynamically based on visible children
-        function updateParentSize(parent) {
-            const childrenContainer = parent.nextElementSibling;
-
-            if (childrenContainer && childrenContainer.tagName === 'UL') {
-                if (childrenContainer.style.display === 'none') {
-                    // Reset width when collapsing
-                    parent.style.width = '';
-                } else {
-                    // Calculate and apply new width when expanding
-                    const totalWidth = calculateTotalWidthForVisibleChildren(childrenContainer);
-                    parent.style.width = `${totalWidth * 1}px`; // Ensure proper spacing
-                }
-            }
-        }
-
-
-        // Recursively calculate the total width of only visible children
-        function calculateTotalWidthForVisibleChildren(node) {
-            let totalWidth = 0;
-
-            const children = Array.from(node.children);
-            children.forEach(child => {
-                const childBox = child.querySelector('.person');
-                if (childBox) {
-                    // Check if the child (and its descendants) are visible
-                    const isVisible = child.style.display !== 'none' && child.offsetHeight > 0;
-
-                    if (isVisible) {
-                        // Get the computed style of the child box
-                        const styles = window.getComputedStyle(childBox);
-
-                        // Add the width of the child box
-                        let childWidth = childBox.offsetWidth;
-
-                        // Include margins, paddings, and borders
-                        childWidth += parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
-                        childWidth += parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-                        childWidth += parseFloat(styles.borderLeftWidth) + parseFloat(styles.borderRightWidth);
-
-                        totalWidth += childWidth;
-                    }
-                }
-
-                // Recursively calculate the width for visible grandchildren
-                const grandChildrenContainer = child.querySelector('ul');
-                if (grandChildrenContainer) {
-                    totalWidth += calculateTotalWidthForVisibleChildren(grandChildrenContainer);
-                }
-            });
-
-            
-
-            return totalWidth;
-        }
-
-
-        function updateGrandparentSize(parent) {
-            const previousUl = parent.previousElementSibling;
-
-            if (previousUl && previousUl.tagName === 'UL') {
-                // Find the parent of the current parent (grandparent)
-                const grandparent = previousUl.previousElementSibling;
-
-                if (grandparent && grandparent.classList.contains('person')) {
-                    updateParentSize(grandparent); // Update the grandparent size
-                }
             }
         }
 
@@ -2475,6 +2423,61 @@
                 block: 'start',
             });
         }
+
+
+
+
+
+        function updateParentWidth(element) {
+            let parent = element.closest('li'); // Find the parent <li> containing this person
+            if (!parent) return;
+
+            let childrenContainer = parent.querySelector('ul');
+            let totalWidth = 0;
+
+            if (childrenContainer) {
+                let children = childrenContainer.querySelectorAll(':scope > li > .person');
+
+                children.forEach(child => {
+                    let childWidth = child.offsetWidth;
+
+                    // Get the computed style for margins and padding
+                    let style = window.getComputedStyle(child);
+                    let marginLeft = parseInt(style.marginLeft);
+                    let marginRight = parseInt(style.marginRight);
+                    let paddingLeft = parseInt(style.paddingLeft);
+                    let paddingRight = parseInt(style.paddingRight);
+
+                    if (child.classList.contains('expanded')) {
+                        let childContainer = child.nextElementSibling;
+                        if (childContainer && childContainer.tagName === 'UL') {
+                            let expandedWidth = Array.from(childContainer.children)
+                                .reduce((sum, li) => sum + li.querySelector('.person').offsetWidth, 0);
+                            childWidth = Math.max(childWidth, expandedWidth);
+                        }
+                    }
+
+                    // Add margins and padding to child width
+                    childWidth += marginLeft + marginRight + paddingLeft + paddingRight;
+
+                    totalWidth += childWidth;
+                });
+            }
+
+            // Ensure the node does not shrink below its default width
+            const defaultWidth = 100; // Adjust based on your CSS
+            totalWidth = Math.max(totalWidth, defaultWidth);
+
+            element.style.width = totalWidth * 1.1 + 'px';
+
+            // Propagate width changes up the tree
+            let grandparent = parent.closest('ul')?.previousElementSibling;
+            if (grandparent && grandparent.classList.contains('person')) {
+                updateParentWidth(grandparent);
+            }
+        }
+
+
 
 
     </script>
