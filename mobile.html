@@ -97,14 +97,32 @@
             list-style: none;
         }
 
+        .family-tree li::after {
+            content: "";
+            position: absolute;
+            text-align: center;
+            top: 100px;
+            right: -15px;
+            width: 80%;
+            height: 4em;
+            background-color: rgb(255, 255, 255);
+            z-index: -100;
+        }
+
         .family-tree li::before {
             content: "";
             position: absolute;
-            top: 70px;
-            left: -12px;
-            width: 14px;
-            height: 4px;
+            text-align: center;
+            top: 100px;
+            left: -15px;
+            width: 80%;
+            height: 4em;
             background-color: rgb(255, 255, 255);
+        }
+
+
+        .family-tree ul>li:last-child::after {
+            display: none;
         }
 
         /* Remove top vertical line for first child */
@@ -140,31 +158,31 @@
         }
 
         .gen1 {
-            background-color: rgba(0, 228, 190, 0.534);
+            background-color: rgba(0, 228, 190);
         }
 
         .gen2 {
-            background-color: rgba(200, 255, 0, 0.774);
+            background-color: rgba(200, 255, 0);
         }
 
         .gen3 {
-            background-color: rgba(238, 0, 111, 0.507);
+            background-color: rgba(238, 0, 111);
         }
 
         .gen4 {
-            background-color: rgba(32, 103, 255, 0.534);
+            background-color: rgba(32, 103, 255);
         }
 
         .gen5 {
-            background-color: rgba(255, 49, 204, 0.774);
+            background-color: rgba(255, 49, 204);
         }
 
         .gen6 {
-            background-color: rgba(255, 170, 58, 0.507);
+            background-color: rgba(255, 170, 58);
         }
 
         .gen7 {
-            background-color: rgba(192, 32, 255, 0.534);
+            background-color: rgba(192, 32, 255);
         }
 
         .gen8 {
@@ -172,11 +190,11 @@
         }
 
         .gen9 {
-            background-color: rgba(117, 255, 63, 0.507);
+            background-color: rgba(117, 255, 63);
         }
 
         .gen10 {
-            background-color: rgba(170, 255, 137, 0.911);
+            background-color: rgba(170, 255, 137);
         }
 
         /* Expand/collapse toggle button */
@@ -247,16 +265,19 @@
         @media (max-width: 576px) {
 
             .family-tree div.person {
+                font-size: 1em;
+                width: 6em;
                 height: 6em;
-                writing-mode: vertical-rl;
+                writing-mode: horizontal-tb;
                 display: inline-block;
-                margin: 10px;
+                margin: 15px;
                 /* Ensure proper resizing */
             }
+            
 
             .family-tree li {
-                margin: 5px;
-                padding: 15px;
+                margin: 10px;
+                padding: 20px;
                 display: block;
                 /* Ensure each list item stacks vertically */
             }
@@ -266,10 +287,6 @@
                 /* Default hidden for toggle functionality */
             }
 
-            .family-tree li::before {
-                top: 90px;
-                left: -15px
-            }
         }
     </style>
 </head>
@@ -284,8 +301,8 @@
     <div class="family-tree">
         <ul>
             <li>
-                <div class="person m"
-                    style="writing-mode: horizontal-tb; background: #ff4b4b; font-size: x-large; height: 4em;">
+                <div class="gen0 person m"
+                    style="background: #ff4b4b; writing-mode: horizontal-tb; width: 16em; height: 6em;">
                     Կոստան Արզումանյան<br>1828/30_ական թվականներից <br>Քոշք - - - - Խոջաբեկ</div>
                 <ul>
                     <li>
