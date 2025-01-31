@@ -2372,16 +2372,6 @@
             }
         }
 
-        // Function to calculate width, including padding and margins
-        function calculateElementWidth(element) {
-            const elementStyle = window.getComputedStyle(element);
-            const width = element.offsetWidth;
-            const marginLeft = parseInt(elementStyle.marginLeft) || 0;
-            const marginRight = parseInt(elementStyle.marginRight) || 0;
-            const paddingLeft = parseInt(elementStyle.paddingLeft) || 0;
-            const paddingRight = parseInt(elementStyle.paddingRight) || 0;
-            return width + marginLeft + marginRight + paddingLeft + paddingRight;
-        }
 
         // Function to create/update width display inside the person box
         function updateSizeDisplay(person, width) {
@@ -2437,8 +2427,26 @@
             }
         }
 
+        function adjustTreePosition() {
+            // Check if the tree needs any adjustment after the branch toggle
+            // You can adjust the scroll position, or align elements
+            const familyTree = document.querySelector('.family-tree');
 
+            // Example: Recalculate position or scroll to the top of the tree
+            familyTree.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        }
 
+        function calculateElementWidth(element) {
+            const style = window.getComputedStyle(element);
+            const width = element.offsetWidth;
+            const marginLeft = parseFloat(style.marginLeft);
+            const marginRight = parseFloat(style.marginRight);
+            console.log(`Width of ${element.textContent.trim()}: ${width}, Margin Left: ${marginLeft}, Margin Right: ${marginRight}`);
+            return width + marginLeft + marginRight;
+        }
 
         function updateExpandedWidth(person) {
             const childrenContainer = person.nextElementSibling;
@@ -2450,12 +2458,15 @@
                 children.forEach(child => {
                     const childPerson = child.querySelector('.person');
                     if (childPerson) {
-                        totalWidth += calculateElementWidth(childPerson); // Include margin/padding
+                        const childWidth = calculateElementWidth(childPerson);
+                        totalWidth += childWidth; // Include margin/padding
+                        console.log(`Child width of ${childPerson.textContent.trim()}: ${childWidth}px`);
                     }
                 });
 
                 // Set the new width based on total width of children
                 const newWidth = Math.max(100, totalWidth);
+                console.log(`Setting width of ${person.textContent.trim()} to ${newWidth}px`);
                 person.style.width = `${newWidth}px`;
 
                 // Ensure width display is created and updated
@@ -2470,6 +2481,7 @@
             let parent = child.parentElement.closest('.person');
 
             while (parent) {
+                console.log(`Updating parent width for ${parent.textContent.trim()}`);
                 updateExpandedWidth(parent);
                 parent = parent.parentElement.closest('.person'); // Traverse upwards
             }
@@ -2478,14 +2490,12 @@
         function updatePreviousGenerations(lastClickedGen) {
             for (let gen = lastClickedGen - 1; gen >= 1; gen--) {
                 let parents = document.querySelectorAll(`.gen${gen}.expanded`);
-                parents.forEach(parent => updateExpandedWidth(parent));
+                parents.forEach(parent => {
+                    console.log(`Updating previous generation width for ${parent.textContent.trim()}`);
+                    updateExpandedWidth(parent);
+                });
             }
         }
-
-
-
-
-
 
 
 
