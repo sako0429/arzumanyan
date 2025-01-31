@@ -101,7 +101,7 @@
             content: "";
             position: absolute;
             text-align: center;
-            top: 100px;
+            top: 60px;
             right: -15px;
             width: 80%;
             height: 4em;
@@ -113,7 +113,7 @@
             content: "";
             position: absolute;
             text-align: center;
-            top: 100px;
+            top: 60px;
             left: -15px;
             width: 80%;
             height: 4em;
@@ -237,6 +237,33 @@
             background: #ff6924;
         }
 
+        @media (max-width: 829px) {
+
+            .family-tree div.person {
+                font-size: 1em;
+                width: 6em;
+                height: 6em;
+                writing-mode: horizontal-tb;
+                display: inline-block;
+                margin: 15px;
+                /* Ensure proper resizing */
+            }
+
+
+            .family-tree li {
+                margin: 10px;
+                padding: 20px;
+                display: block;
+                /* Ensure each list item stacks vertically */
+            }
+
+            .family-tree ul ul {
+                display: none;
+                /* Default hidden for toggle functionality */
+            }
+
+        }
+
 
         /* Responsive Design for Small Screens */
         @media (max-width: 768px) {
@@ -273,7 +300,7 @@
                 margin: 15px;
                 /* Ensure proper resizing */
             }
-            
+
 
             .family-tree li {
                 margin: 10px;
