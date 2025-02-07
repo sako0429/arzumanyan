@@ -76,7 +76,7 @@
         #search-bar {
             padding: 8px;
             font-size: 16px;
-            width: 250px;
+            width: 150px;
             background-color: #a4f1ff;
             outline-color: #ff00ea;
             border-radius: 5px;
@@ -85,7 +85,7 @@
         .searchbtn {
             padding: 8px;
             font-size: 7px;
-            width: auto;
+            width: 100px;
             background-color: #1b3dff;
             outline-color: #ff00ea;
             color: #ffffff;
@@ -3518,43 +3518,39 @@
 
 
 
-        // Listen for input on the search bar
-        document.getElementById('searchbtn').addEventListener('click', function (event) {
-            const query = this.value.trim().toLowerCase(); // Get search input, trimming spaces
+        document.querySelector('.searchbtn').addEventListener('click', function () {
+            const query = document.getElementById('search-bar').value.trim().toLowerCase(); // Get search input
             if (!query) return; // Stop if empty
+
             const familyMembers = document.querySelectorAll('.person'); // Select all family members
             const dropdown = document.getElementById('found-persons-dropdown');
             dropdown.innerHTML = '<option value="">Select a Person</option>'; // Clear previous options
-            // 1. Expand all branches (if needed)
+
+            // Expand all branches
             document.querySelectorAll('.person').forEach(person => {
-                const childrenContainer = person.nextElementSibling; // Find the child UL
+                const childrenContainer = person.nextElementSibling;
                 if (childrenContainer && childrenContainer.tagName === 'UL') {
-                    childrenContainer.style.display = 'flex'; // Ensure children are visible
+                    childrenContainer.style.display = 'flex';
                 }
             });
+
+            // Reset zoom
             const myTree = document.querySelector('.family-tree');
             myTree.style.transform = 'scale(1)';
-            // 2. Search for partial match, highlight, and log details
+
+            // Search logic
             familyMembers.forEach(person => {
-                const personName = person.textContent.trim().toLowerCase(); // Get person's name (trim to avoid extra spaces)
-                // Debugging logs
-                //console.log('Trimmed Person Name:', personName); // Log the name to check
-                //console.log('Search Query:', query); // Log the search query
-                // Test if the query is found in the name
-                const regex = new RegExp(query, 'i'); // Match query anywhere within the name (no word boundaries)
-                const matchFound = regex.test(personName); // Test the regex match
-                //console.log('Regex Match Found:', matchFound); // Log if match is found
-                if (matchFound) {
-                    // Log details of the found person
-                    const branch = person.getAttribute('branch') || 'No branch'; // Default to 'No branch' if missing
-                    const childrenCount = person.getAttribute('data-children-count') || 'No children'; // Get children count if present
+                const personName = person.textContent.trim().toLowerCase();
+                if (personName.includes(query)) {
+                    const branch = person.getAttribute('branch') || 'No branch';
                     const option = document.createElement('option');
                     option.value = branch;
-                    option.textContent = `${personName} | ${branch}`;
+                    option.textContent = `${person.textContent.trim()} | ${branch}`;
                     dropdown.appendChild(option);
                 }
             });
         });
+
 
 
 
