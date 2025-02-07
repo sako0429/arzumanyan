@@ -3515,14 +3515,29 @@
 
 
 
-        document.querySelector('.search-container').addEventListener('click', function () {
+        document.getElementById('search-bar').addEventListener('click', function () {
             const searchBar = document.getElementById('search-bar');
 
             if (searchBar) {
+                // Apply zoom effect for better visibility
+                searchBar.style.transition = 'transform 0.3s ease';
+                searchBar.style.transform = 'scale(1.3)'; // Slight zoom-in effect
+                searchBar.style.zIndex = '9999'; // Bring it to front
                 searchBar.focus(); // Brings up the keyboard on mobile
-                searchBar.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scrolls to the input field
+
+                // Scroll the input field into view
+                setTimeout(() => {
+                    searchBar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100); // Small delay to allow zoom effect to take place
+
+                // Reset after input
+                searchBar.addEventListener('blur', () => {
+                    searchBar.style.transform = 'scale(1)';
+                    searchBar.style.zIndex = '1'; // Reset z-index after focus loss
+                }, { once: true });
             }
         });
+
 
 
 
