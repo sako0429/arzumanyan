@@ -94,10 +94,10 @@
         #found-persons-dropdown {
             padding: 8px;
             font-size: 16px;
-            min-width: 200px;
+            min-width: 250px;
             /* Ensures it's not too small */
             border-radius: 5px;
-            background-color: white;
+            background-color: rgb(255, 216, 216);
             outline-color: #ff00ea;
         }
 
@@ -662,11 +662,12 @@
                 <h1>Խոջաբեկ գյուղի <br>Արզումանյան գերդաստանի տոհմածառ</h1>
             </div>
             <div class="search-container">
-                <div><input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." />
-                <button class="searchbtn">search</button></div>
-                <select id="found-persons-dropdown">
-                        <option value="">*Փնտրման արդյունքները</option>
-                    </select>
+                <div>
+                    <input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." />
+                    <button class="searchbtn">Փնտրել</button>
+                </div>
+                <div>
+                    <select id="found-persons-dropdown"><option value="">*Փնտրման արդյունքները</option></select>
                 </div>
             </div>
         </div>
@@ -3538,7 +3539,7 @@
 
             const familyMembers = document.querySelectorAll('.person'); // Select all family members
             const dropdown = document.getElementById('found-persons-dropdown');
-            dropdown.innerHTML = '<option value="">Select a Person</option>'; // Clear previous options
+            dropdown.innerHTML = '<option value="">Ընտրել ցանկից</option>'; // Clear previous options
 
             // Expand all branches
             document.querySelectorAll('.person').forEach(person => {
