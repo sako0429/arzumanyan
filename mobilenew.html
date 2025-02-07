@@ -96,7 +96,7 @@
             min-width: 250px;
             /* Ensures it's not too small */
             border-radius: 5px;
-            background-color: rgb(255, 216, 216);
+            background-color: #a4f1ff;
             outline-color: #ff00ea;
         }
 
@@ -210,11 +210,13 @@
         .m {
             border: 5px solid #2b40ff;
             border-left: 19px solid #2b40ff;
+            border-right: 10px solid #2b40ff;
         }
 
         .f {
             border: 5px solid #ff00ea;
             border-left: 19px solid #ff00ea;
+            border-right: 10px solid #ff00ea;
         }
 
         .gen1 {
@@ -270,18 +272,16 @@
             line-height: 25px;
             text-align: center;
             font-size: 20px;
-
+            border: 1px solid #000000;
         }
 
         /* Expand/collapse toggle button */
         .m::after {
             background: #39b300;
-            border: 1px solid #ffffff;
         }
 
         .f::after {
             background: #f1ffeb;
-            border: 1px solid #000000;
         }
 
         /* Keyframes for child background color animation */
@@ -289,6 +289,7 @@
             0% {
                 border-color: #ffffff;
                 border-left-color: #3700ff;
+                border-right-color: #3700ff;
             }
 
             50% {
@@ -298,6 +299,7 @@
             100% {
                 border-color: #ffffff;
                 border-left-color: #3700ff;
+                border-right-color: #3700ff;
             }
         }
 
@@ -314,24 +316,24 @@
 
         @keyframes bgColorChange2 {
             0% {
-                background-color: #ff0000;
+                background-color: #ff8888;
             }
 
             33% {
-                background-color: #3700ff;
+                background-color: #6940ff;
             }
 
             66% {
-                background-color: #ffae00;
+                background-color: #ffc446;
             }
 
             100% {
-                background-color: #ff0000;
+                background-color: #ff8888;
             }
         }
 
         .highlight {
-            animation: bgColorChange2 2s ease-in-out infinite;
+            animation: bgColorChange2 3s ease-in-out infinite;
         }
 
         
@@ -341,7 +343,11 @@
         @media (max-width: 1560px) {
 
             body {
-                background-color: #09ff008a;
+                background-color: #a7ffa3;
+            }
+
+            .navbar h1 {
+                color: #007500;
             }
 
             .family-tree div.person {
@@ -386,6 +392,7 @@
             }
 
         }
+
 
         @media (max-width: 1024px) {
 
@@ -393,6 +400,10 @@
                 background-color: #6200ff9c;
             }
 
+            .navbar h1 {
+                color: #eee9ff;
+            }
+
             .family-tree div.person {
                 font-size: 11px;
                 font-weight: bold;
@@ -436,10 +447,15 @@
 
         }
 
+
         @media (max-width: 828px) {
 
             body {
-                background-color: #ff000088;
+                background-color: #ff9090;
+            }
+            
+            .navbar h1 {
+                color: #8a008f;
             }
 
             .navcontainer {
@@ -490,12 +506,14 @@
         }
 
 
-
-
         @media (max-width: 768px) {
 
             body {
-                background-color: #c8ff0091;
+                background-color: #ffde85;
+            }
+
+            .navbar h1 {
+                color: #9e3a00;
             }
 
             .navcontainer {
@@ -549,7 +567,11 @@
         @media (max-width: 576px) {
 
             body {
-                background-color: #00d9ff98;
+                background-color: #64ceff;
+            }
+
+            .navbar h1 {
+                color: #3700ff;
             }
 
             .navcontainer {
@@ -607,7 +629,7 @@
     <div class="navbar">
         <div class="navcontainer">
             <div class="title">
-                <h1>Խոջաբեկ գյուղի <br>Արզումանյան գերդաստանի տոհմածառ</h1>
+                <h1>Խոջաբեկ գյուղի<br>Արզումանյան գերդաստանի տոհմածառ</h1>
             </div>
             <div class="search-container">
                 <div>
@@ -615,7 +637,7 @@
                     <button class="searchbtn">Փնտրել</button>
                 </div>
                 <div>
-                    <select id="found-persons-dropdown"><option value="">*Փնտրման արդյունքները</option></select>
+                    <select id="found-persons-dropdown"><option value="">* Փնտրման արդյունքները</option></select>
                 </div>
             </div>
         </div>
