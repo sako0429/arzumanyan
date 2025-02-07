@@ -164,7 +164,7 @@
             right: -50px;
             width: 100%;
             height: 60px;
-            background-color: rgb(255, 255, 255);
+            background-color: rgb(100, 100, 100);
             z-index: -100;
         }
 
@@ -176,7 +176,7 @@
             left: -50px;
             width: 100%;
             height: 60px;
-            background-color: rgb(255, 255, 255);
+            background-color: rgb(100, 100, 100);
             z-index: -100;
         }
 
@@ -220,44 +220,55 @@
         }
 
         .gen1 {
-            background-color: rgba(0, 228, 87);
+            background-color: #FF6B6B;
+            /* Soft Red */
         }
 
         .gen2 {
-            background-color: rgba(197, 255, 60);
+            background-color: #FFD166;
+            /* Warm Yellow */
         }
 
         .gen3 {
-            background-color: rgba(253, 0, 118);
+            background-color: #06D6A0;
+            /* Greenish-Teal */
         }
 
         .gen4 {
-            background-color: rgba(32, 103, 255);
+            background-color: #d95cff;
+            /* Ocean Blue */
         }
 
         .gen5 {
-            background-color: rgba(255, 49, 204);
+            background-color: #005dd6;
+            /* Deep Blue */
         }
 
         .gen6 {
-            background-color: rgba(255, 197, 39);
+            background-color: #EF476F;
+            /* Vibrant Pink */
         }
 
         .gen7 {
-            background-color: rgba(32, 210, 255);
+            background-color: #4fc7ff;
+            /* Strong Purple */
         }
 
         .gen8 {
-            background-color: rgba(255, 251, 37);
+            background-color: #FF9F1C;
+            /* Bright Orange */
         }
 
         .gen9 {
-            background-color: rgba(117, 255, 63);
+            background-color: #2A9D8F;
+            /* Muted Teal */
         }
 
         .gen10 {
-            background-color: rgba(255, 174, 137);
+            background-color: #B56576;
+            /* Soft Burgundy */
         }
+
 
         .m::after,
         .f::after {
@@ -336,14 +347,14 @@
             animation: bgColorChange2 3s ease-in-out infinite;
         }
 
-        
 
-        
+
+
 
         @media (max-width: 1560px) {
 
             body {
-                background-color: #a7ffa3;
+                background-color: rgba(168, 255, 163, 0.3);
             }
 
             .navbar h1 {
@@ -397,7 +408,7 @@
         @media (max-width: 1024px) {
 
             body {
-                background-color: #6200ff9c;
+                background-color: rgba(98, 0, 255, 0.3);
             }
 
             .navbar h1 {
@@ -451,9 +462,9 @@
         @media (max-width: 828px) {
 
             body {
-                background-color: #ff9090;
+                background-color: rgba(255, 144, 144, 0.3);
             }
-            
+
             .navbar h1 {
                 color: #8a008f;
             }
@@ -509,7 +520,7 @@
         @media (max-width: 768px) {
 
             body {
-                background-color: #ffde85;
+                background-color: rgba(255, 222, 133, 0.3);
             }
 
             .navbar h1 {
@@ -567,7 +578,7 @@
         @media (max-width: 576px) {
 
             body {
-                background-color: #64ceff;
+                background-color: rgba(100, 206, 255, 0.3);
             }
 
             .navbar h1 {
@@ -637,7 +648,9 @@
                     <button class="searchbtn">Փնտրել</button>
                 </div>
                 <div>
-                    <select id="found-persons-dropdown"><option value="">* Փնտրման արդյունքները</option></select>
+                    <select id="found-persons-dropdown">
+                        <option value="">* Փնտրման արդյունքները</option>
+                    </select>
                 </div>
             </div>
         </div>
