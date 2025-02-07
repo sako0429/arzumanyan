@@ -65,7 +65,7 @@
         /* Search container adjustments */
         .search-container {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             /* Ensure input and dropdown are in a row */
             align-items: center;
             gap: 10px;
@@ -443,6 +443,10 @@
                 background-color: #7723ff;
             }
 
+            .navcontainer {
+                flex-direction: column;
+            }
+
             .family-tree div.person {
                 font-size: 11px;
                 font-weight: bold;
@@ -490,6 +494,10 @@
 
             body {
                 background-color: #ff7a7a;
+            }
+
+            .navcontainer {
+                flex-direction: column;
             }
 
             .family-tree div.person {
@@ -544,6 +552,10 @@
                 background-color: #cfff23;
             }
 
+            .navcontainer {
+                flex-direction: column;
+            }
+
             .family-tree div.person {
                 font-size: 11px;
                 font-weight: bold;
@@ -592,6 +604,10 @@
 
             body {
                 background-color: #23deff;
+            }
+
+            .navcontainer {
+                flex-direction: column;
             }
 
             .family-tree div.person {
@@ -648,9 +664,9 @@
                 <h1>Խոջաբեկ գյուղի <br>Արզումանյան գերդաստանի տոհմածառ</h1>
             </div>
             <div class="search-container">
-                <div><input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." /></div>
-                <div><button class="searchbtn">search</button></div>
-                <div><select id="found-persons-dropdown">
+                <div><input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." />
+                <button class="searchbtn">search</button></div>
+                <select id="found-persons-dropdown">
                         <option value="">*Փնտրման արդյունքները</option>
                     </select>
                 </div>
