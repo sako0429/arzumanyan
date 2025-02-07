@@ -25,55 +25,84 @@
             background-color: #818080;
         }
 
-
+        .navcontainer {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: auto;
+            flex-wrap: wrap;
+        }
 
         /* Navigation bar styling */
         .navbar {
             width: 100%;
-            min-height: 100px;
+            height: auto;
             position: fixed;
-            top: 0;
-            left: 0;
-            padding: 10px;
+            top: 20px;
             display: flex;
-            gap: 100px;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            /* Optional: Semi-transparent effect */
+            padding: 10px 0;
             z-index: 1000;
         }
 
         .navbar h1 {
-            font-size: 30px;
+            font-size: 20px;
             font-style: oblique;
-            line-height: 150%;
             text-align: center;
             color: rgb(255, 196, 0);
         }
 
         .title {
-            display: flex;
-            flex-direction: column;
-            margin: 10px;
+            flex: 1;
             text-align: center;
         }
 
+        /* Search container adjustments */
         .search-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            /* Ensure input and dropdown are in a row */
+            align-items: center;
             gap: 10px;
-            margin: 10px;
             text-align: center;
         }
 
+        /* Input box styles */
         #search-bar {
             padding: 8px;
             font-size: 16px;
-            width: 100%;
-            max-width: 300px;
-            background-color: #23deff;
+            width: 250px;
+            background-color: #a4f1ff;
             outline-color: #ff00ea;
             border-radius: 5px;
         }
+
+        .searchbtn {
+            padding: 8px;
+            font-size: 7px;
+            width: auto;
+            background-color: #1b3dff;
+            outline-color: #ff00ea;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        /* Dropdown styling */
+        #found-persons-dropdown {
+            padding: 8px;
+            font-size: 16px;
+            min-width: 200px;
+            /* Ensures it's not too small */
+            border-radius: 5px;
+            background-color: white;
+            outline-color: #ff00ea;
+        }
+
 
 
         .generation-number {
@@ -308,6 +337,55 @@
 
         .highlight {
             animation: bgColorChange2 2s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+
+            body {
+                background-color: #23deff;
+            }
+
+            .family-tree div.person {
+                font-size: 11px;
+                font-weight: bold;
+                width: 80px;
+                min-height: 35px;
+                display: inline-block;
+                margin: 10px;
+                /* Ensure proper resizing */
+            }
+
+            .generation-number {
+                left: -23px;
+                bottom: 20px;
+            }
+
+            .family-tree li {
+                margin: 10px;
+                padding: 15px 5px;
+                display: block;
+                /* Ensure each list item stacks vertically */
+            }
+
+            .family-tree ul ul {
+                display: none;
+                /* Default hidden for toggle functionality */
+            }
+
+            .family-tree li::after {
+                top: 50px;
+                right: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+            .family-tree li::before {
+                top: 50px;
+                left: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
         }
 
         @media (max-width: 1560px) {
@@ -565,14 +643,17 @@
 <body>
 
     <div class="navbar">
-        <div class="title">
-            <h1>Խոջաբեկ գյուղի <br>Արզումանյան գերդաստանի տոհմածառ</h1>
-        </div>
-        <div class="search-container">
-            <div><input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." /></div>
-            <div><select id="found-persons-dropdown">
-                    <option value="">*Փնտրման արդյունքները</option>
-                </select>
+        <div class="navcontainer">
+            <div class="title">
+                <h1>Խոջաբեկ գյուղի <br>Արզումանյան գերդաստանի տոհմածառ</h1>
+            </div>
+            <div class="search-container">
+                <div><input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." /></div>
+                <div><button class="searchbtn">search</button></div>
+                <div><select id="found-persons-dropdown">
+                        <option value="">*Փնտրման արդյունքները</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -3438,53 +3519,41 @@
 
 
         // Listen for input on the search bar
-        document.getElementById('search-bar').addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') { // Check if Enter key is pressed
-                const query = this.value.trim().toLowerCase(); // Get search input, trimming spaces
-                if (!query) return; // Stop if empty
-
-                const familyMembers = document.querySelectorAll('.person'); // Select all family members
-                const dropdown = document.getElementById('found-persons-dropdown');
-                dropdown.innerHTML = '<option value="">Select a Person</option>'; // Clear previous options
-
-                // 1. Expand all branches (if needed)
-                document.querySelectorAll('.person').forEach(person => {
-                    const childrenContainer = person.nextElementSibling; // Find the child UL
-                    if (childrenContainer && childrenContainer.tagName === 'UL') {
-                        childrenContainer.style.display = 'flex'; // Ensure children are visible
-                    }
-                });
-
-                const myTree = document.querySelector('.family-tree');
-                myTree.style.transform = 'scale(1)';
-
-                // 2. Search for partial match, highlight, and log details
-                familyMembers.forEach(person => {
-                    const personName = person.textContent.trim().toLowerCase(); // Get person's name (trim to avoid extra spaces)
-
-                    // Debugging logs
-                    //console.log('Trimmed Person Name:', personName); // Log the name to check
-                    //console.log('Search Query:', query); // Log the search query
-
-                    // Test if the query is found in the name
-                    const regex = new RegExp(query, 'i'); // Match query anywhere within the name (no word boundaries)
-                    const matchFound = regex.test(personName); // Test the regex match
-
-                    //console.log('Regex Match Found:', matchFound); // Log if match is found
-
-                    if (matchFound) {
-                        // Log details of the found person
-                        const branch = person.getAttribute('branch') || 'No branch'; // Default to 'No branch' if missing
-                        const childrenCount = person.getAttribute('data-children-count') || 'No children'; // Get children count if present
-
-                        const option = document.createElement('option');
-                        option.value = branch;
-                        option.textContent = `${personName} | ${branch}`;
-                        dropdown.appendChild(option);
-
-                    }
-                });
-            }
+        document.getElementById('searchbtn').addEventListener('click', function (event) {
+            const query = this.value.trim().toLowerCase(); // Get search input, trimming spaces
+            if (!query) return; // Stop if empty
+            const familyMembers = document.querySelectorAll('.person'); // Select all family members
+            const dropdown = document.getElementById('found-persons-dropdown');
+            dropdown.innerHTML = '<option value="">Select a Person</option>'; // Clear previous options
+            // 1. Expand all branches (if needed)
+            document.querySelectorAll('.person').forEach(person => {
+                const childrenContainer = person.nextElementSibling; // Find the child UL
+                if (childrenContainer && childrenContainer.tagName === 'UL') {
+                    childrenContainer.style.display = 'flex'; // Ensure children are visible
+                }
+            });
+            const myTree = document.querySelector('.family-tree');
+            myTree.style.transform = 'scale(1)';
+            // 2. Search for partial match, highlight, and log details
+            familyMembers.forEach(person => {
+                const personName = person.textContent.trim().toLowerCase(); // Get person's name (trim to avoid extra spaces)
+                // Debugging logs
+                //console.log('Trimmed Person Name:', personName); // Log the name to check
+                //console.log('Search Query:', query); // Log the search query
+                // Test if the query is found in the name
+                const regex = new RegExp(query, 'i'); // Match query anywhere within the name (no word boundaries)
+                const matchFound = regex.test(personName); // Test the regex match
+                //console.log('Regex Match Found:', matchFound); // Log if match is found
+                if (matchFound) {
+                    // Log details of the found person
+                    const branch = person.getAttribute('branch') || 'No branch'; // Default to 'No branch' if missing
+                    const childrenCount = person.getAttribute('data-children-count') || 'No children'; // Get children count if present
+                    const option = document.createElement('option');
+                    option.value = branch;
+                    option.textContent = `${personName} | ${branch}`;
+                    dropdown.appendChild(option);
+                }
+            });
         });
 
 
