@@ -344,7 +344,7 @@
         }
 
         .highlight {
-            animation: bgColorChange2 3s ease-in-out infinite;
+            animation: bgColorChange2 1.5s ease-in-out infinite;
         }
 
 
@@ -3512,6 +3512,18 @@
 
             return totalWidth;
         }
+
+
+
+        document.querySelector('.search-container').addEventListener('click', function () {
+            const searchBar = document.getElementById('search-bar');
+
+            if (searchBar) {
+                searchBar.focus(); // Brings up the keyboard on mobile
+                searchBar.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scrolls to the input field
+            }
+        });
+
 
 
 
