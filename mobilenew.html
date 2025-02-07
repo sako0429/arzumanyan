@@ -3515,38 +3515,11 @@
 
 
 
-        document.querySelector('.search-container').addEventListener('click', function () {
-            const searchBar = document.querySelector('.search-container');
+        function performSearch() {
+            const query = document.getElementById('search-bar').value.trim().toLowerCase();
+            if (!query) return;
 
-            if (searchBar) {
-                // Apply zoom effect for better visibility
-                searchBar.style.transition = 'transform 0.3s ease';
-                searchBar.style.transform = 'scale(2)'; // Slight zoom-in effect
-                searchBar.style.zIndex = '9999'; // Bring it to front
-
-                // Scroll the input field into view
-                setTimeout(() => {
-                    searchBar.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100); // Small delay to allow zoom effect to take place
-
-                // Reset after input
-                searchBar.addEventListener('blur', () => {
-                    searchBar.style.transform = 'scale(1)';
-                    searchBar.style.zIndex = '1'; // Reset z-index after focus loss
-                }, { once: true });
-            }
-        });
-
-
-
-
-
-
-        document.querySelector('.searchbtn').addEventListener('click', function () {
-            const query = document.getElementById('search-bar').value.trim().toLowerCase(); // Get search input
-            if (!query) return; // Stop if empty
-
-            const familyMembers = document.querySelectorAll('.person'); // Select all family members
+            const familyMembers = document.querySelectorAll('.person');
             const dropdown = document.getElementById('found-persons-dropdown');
             dropdown.innerHTML = '<option value="">Ընտրել ցանկից</option>'; // Clear previous options
 
@@ -3573,7 +3546,19 @@
                     dropdown.appendChild(option);
                 }
             });
+        }
+
+        // Run search on button click
+        document.querySelector('.searchbtn').addEventListener('click', performSearch);
+
+        // Run search on Enter key press inside the search bar
+        document.getElementById('search-bar').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission (if inside a form)
+                performSearch();
+            }
         });
+
 
 
 
