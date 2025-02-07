@@ -13,18 +13,16 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            height: 100vh;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 20px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: url('w.jpg') no-repeat center center fixed;
-            background-size: cover;
-            /* Ensures the image covers the whole page */
-            color: rgba(0, 0, 0, 0.5);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            height: 100dvh;
+            background-color: #b5a99d;
         }
 
 
@@ -50,7 +48,7 @@
             font-style: oblique;
             line-height: 150%;
             text-align: center;
-            color: rgb(38, 0, 255);
+            color: rgb(255, 187, 0);
         }
 
         .search-container {
@@ -2984,10 +2982,6 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            initTree();
-        });
-
 
         // Family Tree Initialization
         function initTree() {
@@ -3003,9 +2997,6 @@
             const childrenCount = parseInt(parent.getAttribute('data-children-count')) || 0;
             parent.style.setProperty('--children-count', `"${childrenCount}"`);
         }
-
-
-
 
 
         // Add Generation Number
@@ -3034,9 +3025,6 @@
                 inline: 'center' // Center horizontally
             });
         }
-
-
-
 
 
         // Calculate the total width of an element including margins
