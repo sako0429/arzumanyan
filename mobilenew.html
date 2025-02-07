@@ -312,7 +312,7 @@
         }
 
 
-        @media (max-width: 829px) {
+        @media (max-width: 1025px) {
 
             .family-tree div.person {
                 font-size: 9px;
@@ -323,7 +323,7 @@
                 margin: 15px;
                 /* Ensure proper resizing */
             }
-            
+
 
 
             .family-tree li {
@@ -2983,14 +2983,18 @@
 
     <script>
 
-        // Family Tree Initialization
-        function initTree() {
+        document.addEventListener("DOMContentLoaded", () => {
+            // Attach toggleBranch and update child counts for all `.m` elements
+            document.querySelectorAll('.person').forEach(parent => {
+                parent.setAttribute('onclick', 'toggleBranch(this)');
+                updateChildrenCount(parent);
+            });
+
+            // Add generation numbers for all `.person` elements
             document.querySelectorAll('.person').forEach(person => {
-                person.addEventListener('click', () => toggleBranch(person));
-                updateChildrenCount(person);
                 addGenerationNumber(person);
             });
-        }
+        });
 
         // Update Children Count
         function updateChildrenCount(parent) {
@@ -3087,7 +3091,7 @@
                     displayAllChildren(element);
                 } else {
                     // Collapsing: Reset width and remove 'expanded' class from children
-                    element.style.width = `120px`;
+                    element.style.width = `60px`;
                     element.querySelector('.children-info').remove();
                 }
                 // Adjust tree position if needed
