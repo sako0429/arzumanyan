@@ -3533,7 +3533,7 @@
 
             // Reset zoom
             const myTree = document.querySelector('.family-tree');
-            myTree.style.transform = 'scale(1)';
+            //myTree.style.transform = 'scale(1)';
 
             // Search logic
             familyMembers.forEach(person => {
@@ -3554,10 +3554,17 @@
         // Run search on Enter key press inside the search bar
         document.getElementById('search-bar').addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent form submission (if inside a form)
+                event.preventDefault();
                 performSearch();
             }
         });
+
+        // Reset search on focus
+        document.getElementById('search-bar').addEventListener('focus', function () {
+            const dropdown = document.getElementById('found-persons-dropdown');
+            dropdown.innerHTML = '<option value="">Ընտրել ցանկից</option>'; // Clear dropdown
+        });
+
 
 
 
