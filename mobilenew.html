@@ -3515,15 +3515,14 @@
 
 
 
-        document.getElementById('search-bar').addEventListener('click', function () {
-            const searchBar = document.getElementById('search-bar');
+        document.querySelector('.search-container').addEventListener('click', function () {
+            const searchBar = document.querySelector('.search-container');
 
             if (searchBar) {
                 // Apply zoom effect for better visibility
                 searchBar.style.transition = 'transform 0.3s ease';
-                searchBar.style.transform = 'scale(1.3)'; // Slight zoom-in effect
+                searchBar.style.transform = 'scale(2)'; // Slight zoom-in effect
                 searchBar.style.zIndex = '9999'; // Bring it to front
-                searchBar.focus(); // Brings up the keyboard on mobile
 
                 // Scroll the input field into view
                 setTimeout(() => {
