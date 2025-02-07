@@ -15,12 +15,10 @@
         body {
             text-align: center;
             font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 20px;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: auto;
             height: 100dvh;
             background-color: #818080;
         }
@@ -41,6 +39,7 @@
             height: auto;
             position: fixed;
             top: 20px;
+            left: calc(50% - 50%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -52,7 +51,7 @@
             font-size: 20px;
             font-style: oblique;
             text-align: center;
-            color: rgb(0, 81, 255);
+            color: rgb(255, 174, 0);
         }
 
         .title {
@@ -129,7 +128,7 @@
         .family-tree {
             position: absolute;
             top: 50%;
-            left: 200px;
+            left: calc(50% - 150px);
             text-align: center;
             align-self: flex-start;
         }
@@ -335,59 +334,14 @@
             animation: bgColorChange2 2s ease-in-out infinite;
         }
 
-        @media (max-width: 768px) {
+        
 
-            body {
-                background-color: #23deff;
-            }
-
-            .family-tree div.person {
-                font-size: 11px;
-                font-weight: bold;
-                width: 80px;
-                min-height: 35px;
-                display: inline-block;
-                margin: 10px;
-                /* Ensure proper resizing */
-            }
-
-            .generation-number {
-                left: -23px;
-                bottom: 20px;
-            }
-
-            .family-tree li {
-                margin: 10px;
-                padding: 15px 5px;
-                display: block;
-                /* Ensure each list item stacks vertically */
-            }
-
-            .family-tree ul ul {
-                display: none;
-                /* Default hidden for toggle functionality */
-            }
-
-            .family-tree li::after {
-                top: 50px;
-                right: -30px;
-                width: 100%;
-                height: 30px;
-            }
-
-            .family-tree li::before {
-                top: 50px;
-                left: -30px;
-                width: 100%;
-                height: 30px;
-            }
-
-        }
+        
 
         @media (max-width: 1560px) {
 
             body {
-                background-color: #06b900;
+                background-color: #09ff008a;
             }
 
             .family-tree div.person {
@@ -436,7 +390,7 @@
         @media (max-width: 1024px) {
 
             body {
-                background-color: #7723ff;
+                background-color: #6200ff9c;
             }
 
             .family-tree div.person {
@@ -485,7 +439,7 @@
         @media (max-width: 828px) {
 
             body {
-                background-color: #ff7a7a;
+                background-color: #ff000088;
             }
 
             .navcontainer {
@@ -541,7 +495,7 @@
         @media (max-width: 768px) {
 
             body {
-                background-color: #cfff23;
+                background-color: #c8ff0091;
             }
 
             .navcontainer {
@@ -595,7 +549,7 @@
         @media (max-width: 576px) {
 
             body {
-                background-color: #23deff;
+                background-color: #00d9ff98;
             }
 
             .navcontainer {
