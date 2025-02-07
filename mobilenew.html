@@ -69,11 +69,23 @@
             text-align: center;
         }
 
+        .for-search {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .for-drop {
+            display: flex;
+            width: 100%;
+        }
+
         /* Input box styles */
         #search-bar {
             padding: 8px;
-            font-size: 16px;
-            width: 150px;
+            font-size: 23px;
+            width: auto;
             background-color: #a4f1ff;
             outline-color: #ff00ea;
             border-radius: 5px;
@@ -81,7 +93,7 @@
 
         .searchbtn {
             padding: 8px;
-            font-size: 16px;
+            font-size: 23px;
             width: auto;
             background-color: #1b3dff;
             outline-color: #ff00ea;
@@ -92,8 +104,8 @@
         /* Dropdown styling */
         #found-persons-dropdown {
             padding: 8px;
-            font-size: 16px;
-            min-width: 250px;
+            font-size: 23px;
+            width: auto;
             /* Ensures it's not too small */
             border-radius: 5px;
             background-color: #a4f1ff;
@@ -643,11 +655,11 @@
                 <h1>Խոջաբեկ գյուղի<br>Արզումանյան գերդաստանի տոհմածառ</h1>
             </div>
             <div class="search-container">
-                <div>
+                <div class="for-search">
                     <input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." />
                     <button class="searchbtn">Փնտրել</button>
                 </div>
-                <div>
+                <div class="for-drop">
                     <select id="found-persons-dropdown">
                         <option value="">* Փնտրման արդյունքները</option>
                     </select>
@@ -3533,7 +3545,7 @@
 
             // Reset zoom
             const myTree = document.querySelector('.family-tree');
-            //myTree.style.transform = 'scale(1)';
+            myTree.style.transform = 'scale(1)';
 
             // Search logic
             familyMembers.forEach(person => {
@@ -3554,7 +3566,7 @@
         // Run search on Enter key press inside the search bar
         document.getElementById('search-bar').addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
-                event.preventDefault();
+                //event.preventDefault();
                 performSearch();
             }
         });
