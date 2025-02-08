@@ -3568,9 +3568,15 @@
         document.getElementById("makefree").addEventListener("click", function () {
             let treeContainer = document.querySelector(".family-tree-container");
             if (treeContainer) {
-                treeContainer.style.overflow = "visible";
+                // Toggle the overflow property between 'visible' and 'auto'
+                if (treeContainer.style.overflow === "auto") {
+                    treeContainer.style.overflow = "visible";
+                } else {
+                    treeContainer.style.overflow = "auto";
+                }
             }
         });
+
 
 
 
