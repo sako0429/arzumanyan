@@ -36,7 +36,6 @@
 
         /* Navigation bar styling */
         .navbar {
-            background-color: #bba890;
             width: 100vw;
             height: fit-content;
             position: fixed;
@@ -3566,8 +3565,12 @@
     <script>
 
         document.getElementById("makefree").addEventListener("click", function () {
-            document.getElementsByClassName("family-tree-container")[0].style.overflow = "hidden";
+            let treeContainer = document.querySelector(".family-tree-container");
+            if (treeContainer) {
+                treeContainer.style.overflow = "hidden";
+            }
         });
+
 
 
 
