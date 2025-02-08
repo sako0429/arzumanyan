@@ -143,6 +143,7 @@
             /* Allows `.family-tree` to move within */
             width: 100vw;
             height: 100vh;
+            overflow: auto;
             /* Prevents unwanted scrollbars */
         }
 
@@ -3565,7 +3566,7 @@
     <script>
 
         document.getElementById("makefree").addEventListener("click", function () {
-            document.getElementsByClassName("family-tree-container")[0].style.height = "0vh";
+            document.getElementsByClassName("family-tree-container")[0].style.overflow = "hidden";
         });
 
 
