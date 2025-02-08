@@ -3750,7 +3750,7 @@
         // Run search on Enter key press inside the search bar
         document.getElementById('search-bar').addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
-                //event.preventDefault();
+                event.preventDefault();
                 performSearch();
             }
         });
@@ -3758,7 +3758,7 @@
         // Reset search on focus
         document.getElementById('search-bar').addEventListener('focus', function () {
             const dropdown = document.getElementById('found-persons-dropdown');
-            dropdown.innerHTML = '<option value="">Ընտրել ցանկից</option>'; // Clear dropdown
+            dropdown.innerHTML = '<option value="">Տեսնել</option>'; // Clear dropdown
         });
 
 
