@@ -3569,10 +3569,10 @@
             let treeContainer = document.querySelector(".family-tree-container");
             if (treeContainer) {
                 // Toggle the overflow property between 'visible' and 'auto'
-                if (treeContainer.style.overflow === "auto") {
-                    treeContainer.style.overflow = "visible";
-                } else {
+                if (treeContainer.style.overflow === "visible") {
                     treeContainer.style.overflow = "auto";
+                } else {
+                    treeContainer.style.overflow = "visible";
                 }
             }
         });
