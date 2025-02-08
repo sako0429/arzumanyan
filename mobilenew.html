@@ -649,8 +649,10 @@
 
         .fixed-widget {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 2vh;
+            /* Keep it at the bottom relative to viewport height */
+            right: 2vw;
+            /* Keep it in the right corner relative to viewport width */
             width: 60px;
             height: 60px;
             background-color: rgba(0, 0, 0, 0.7);
@@ -664,17 +666,17 @@
             z-index: 9999;
             cursor: pointer;
             transition: all 0.3s ease;
+            transform-origin: bottom right;
         }
 
         .fixed-widget.expanded {
             width: 80vw;
-            /* Expanding width for larger screens */
+            /* Expand width on larger screens */
             font-size: 20px;
             border-radius: 30px;
             justify-content: flex-start;
             /* Align content to the left */
             padding: 0 10px;
-            /* Add padding for spacing */
         }
 
         .widget-content {
@@ -682,29 +684,26 @@
             flex: 1;
             align-items: center;
             width: 100%;
-            /* Ensures it takes full width when expanded */
         }
 
         .fixed-widget.expanded .widget-content {
             display: flex;
             /* Show the widget content when expanded */
             flex-direction: row;
-            /* Align input and button horizontally */
             gap: 10px;
-            /* Add space between input and button */
         }
 
+        /* Ensure the input field doesn't overflow */
         .for-input input {
             flex: 1;
-            /* Let the input take up available space */
             border: none;
             padding: 5px;
             border-radius: 5px;
             outline: none;
             width: auto;
-            /* Use flex for width instead of 100% */
         }
 
+        /* Button Styling */
         #searchButton {
             background: rgb(25, 0, 255);
             border: none;
@@ -712,7 +711,6 @@
             border-radius: 5px;
             cursor: pointer;
             color: white;
-            /* Ensure text is visible */
         }
     </style>
 </head>
@@ -3368,8 +3366,8 @@
                 <input type="text" id="searchInput" placeholder="Search..." />
                 <button id="searchButton">search</button>
             </div>
-                
-            
+
+
         </div>
     </div>
 
@@ -3698,6 +3696,14 @@
 
 
 
+
+
+
+
+        window.addEventListener('resize', function () {
+            let widget = document.querySelector(".fixed-widget");
+            widget.style.transform = `scale(${1 / window.devicePixelRatio})`; // Maintain size
+        });
 
 
         // Wait for the DOM to fully load before attaching event listeners
