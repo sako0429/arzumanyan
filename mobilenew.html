@@ -138,7 +138,7 @@
 
 
         .family-tree {
-            position: absolute;
+            position: relative;
             top: 50%;
             left: calc(50% - 150px);
             text-align: center;
@@ -647,71 +647,7 @@
 
 
 
-        .fixed-widget {
-            position: fixed;
-            bottom: 2vh;
-            /* Keep it at the bottom relative to viewport height */
-            right: 2vw;
-            /* Keep it in the right corner relative to viewport width */
-            width: 60px;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            z-index: 9999;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            transform-origin: bottom right;
-        }
-
-        .fixed-widget.expanded {
-            width: 80vw;
-            /* Expand width on larger screens */
-            font-size: 20px;
-            border-radius: 30px;
-            justify-content: flex-start;
-            /* Align content to the left */
-            padding: 0 10px;
-        }
-
-        .widget-content {
-            display: none;
-            flex: 1;
-            align-items: center;
-            width: 100%;
-        }
-
-        .fixed-widget.expanded .widget-content {
-            display: flex;
-            /* Show the widget content when expanded */
-            flex-direction: row;
-            gap: 10px;
-        }
-
-        /* Ensure the input field doesn't overflow */
-        .for-input input {
-            flex: 1;
-            border: none;
-            padding: 5px;
-            border-radius: 5px;
-            outline: none;
-            width: auto;
-        }
-
-        /* Button Styling */
-        #searchButton {
-            background: rgb(25, 0, 255);
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-        }
+        
     </style>
 </head>
 
@@ -3359,24 +3295,6 @@
 
 
 
-    <div class="fixed-widget" onclick="toggleWidget(event)">
-        🔍
-        <div class="widget-content">
-            <div class="for-input">
-                <input type="text" id="searchInput" placeholder="Search..." />
-                <button id="searchButton">search</button>
-            </div>
-
-
-        </div>
-    </div>
-
-
-
-
-
-
-
     <script>
 
 
@@ -3620,7 +3538,7 @@
 
 
         function performSearch() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const query = document.getElementById('search-bar').value.trim().toLowerCase();
             if (!query) return;
 
             const familyMembers = document.querySelectorAll('.person');
@@ -3693,56 +3611,6 @@
                 selectedPerson.classList.remove('highlight');
             }
         });
-
-
-
-
-
-
-
-        window.addEventListener('resize', function () {
-            let widget = document.querySelector(".fixed-widget");
-            widget.style.transform = `scale(${1 / window.devicePixelRatio})`; // Maintain size
-        });
-
-
-        // Wait for the DOM to fully load before attaching event listeners
-        document.addEventListener('DOMContentLoaded', function () {
-            // Toggle the widget's expanded state and focus on input
-            function toggleWidget(event) {
-                let widget = document.querySelector(".fixed-widget");
-                widget.classList.toggle("expanded");
-
-                // If widget is expanded, focus the input field
-                if (widget.classList.contains("expanded")) {
-                    document.getElementById("searchInput").focus();
-                }
-            }
-
-            // Close the widget if the user clicks anywhere outside
-            document.addEventListener('click', function (event) {
-                let widget = document.querySelector(".fixed-widget");
-                if (!widget.contains(event.target)) {
-                    widget.classList.remove("expanded");
-                }
-            });
-
-            // Attach event listener to the search button
-            const searchButton = document.getElementById("searchButton");
-            searchButton.addEventListener('click', function (event) {
-                event.stopPropagation();  // Prevent the click from closing the widget
-                performSearch();  // Call your actual search function
-
-                // Optionally, close the widget after search
-                let widget = document.querySelector(".fixed-widget");
-                widget.classList.remove("expanded");
-            });
-
-            // Attach event listener to the widget to toggle its state
-            document.querySelector('.fixed-widget').addEventListener('click', toggleWidget);
-        });
-
-
 
 
 
