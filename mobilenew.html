@@ -20,7 +20,7 @@
             align-items: center;
             width: auto;
             height: 100dvh;
-            background-color: #818080;
+            background-color: #b40000;
         }
 
         .navcontainer {
@@ -31,7 +31,7 @@
             align-items: center;
             flex-wrap: wrap;
             text-align: center;
-            gap: 20px;
+            gap: 5px;
         }
 
         /* Navigation bar styling */
@@ -48,7 +48,7 @@
         }
 
         .navbar h1 {
-            font-size: 1.5em;
+            font-size: clamp(1em, 4vw, 1.5em);
             font-style: oblique;
             text-align: center;
             color: rgb(255, 174, 0);
@@ -63,6 +63,7 @@
         .search-container {
             display: flex;
             flex-direction: column;
+            margin-top: 20px;
             /* Ensure input and dropdown are in a row */
             align-items: center;
             gap: 10px;
@@ -84,8 +85,8 @@
         /* Input box styles */
         #search-bar {
             padding: 8px;
-            font-size: 23px;
-            width: auto;
+            font-size: clamp(1em, 4vw, 1.5em);
+            width: 100%;
             background-color: #a4f1ff;
             outline-color: #ff00ea;
             border-radius: 5px;
@@ -104,8 +105,8 @@
         /* Dropdown styling */
         #found-persons-dropdown {
             padding: 8px;
-            font-size: 23px;
-            width: auto;
+            font-size: clamp(1em, 4vw, 1.5em);
+            width: 100%;
             max-width: 100%;
             /* Ensures it's not too small */
             border-radius: 5px;
@@ -128,8 +129,8 @@
         .children-info {
             position: absolute;
             left: 10px;
-            bottom: 5px;
-            color: #000000;
+            bottom: 0px;
+            color: #585858;
         }
 
         .children-count {
@@ -149,7 +150,7 @@
 
         .family-tree {
             position: absolute;
-            top: 20%;
+            top: 30%;
             left: calc(50% - 150px);
             text-align: center;
             align-self: flex-start;
@@ -220,6 +221,7 @@
             min-height: 50px;
             border-radius: 8px;
             padding: 10px;
+            padding-top: 2px;
             margin: 5px;
             font-size: 12px;
             font-weight: normal;
@@ -372,100 +374,15 @@
 
 
 
-
-        @media (max-width: 1560px) {
-
-            body {
-                background-color: rgba(168, 255, 163, 0.3);
-            }
-
-            .navbar h1 {
-                color: #007500;
-                font-size: 1.4em;
-            }
-
-            #search-bar {
-                width: 100%;
-                font-size: 22px;
-            }
-
-            #found-persons-dropdown {
-                width: 100%;
-                font-size: 22px;
-            }
-
-            .family-tree div.person {
-                font-size: 11px;
-                font-weight: bold;
-                width: 80px;
-                min-height: 35px;
-                display: inline-block;
-                margin: 10px;
-                /* Ensure proper resizing */
-            }
-
-            .generation-number {
-                left: -23px;
-                bottom: 20px;
-            }
-
-            .family-tree li {
-                margin: 10px;
-                padding: 15px 5px;
-                display: block;
-                /* Ensure each list item stacks vertically */
-            }
-
-            .family-tree ul ul {
-                display: none;
-                /* Default hidden for toggle functionality */
-            }
-
-            .family-tree li::after {
-                top: 42px;
-                right: -30px;
-                width: 100%;
-                height: 30px;
-            }
-
-            .family-tree li::before {
-                top: 42px;
-                left: -30px;
-                width: 100%;
-                height: 30px;
-            }
-
-        }
-
-
         @media (max-width: 1024px) {
 
             body {
-                background-color: rgba(98, 0, 255, 0.3);
-            }
-
-            .navbar h1 {
-                color: #eee9ff;
-            }
-
-            #search-bar {
-                width: 100%;
-                font-size: 20px;
-            }
-
-            #found-persons-dropdown {
-                width: 100%;
-                font-size: 20px;
+                background-color: rgba(168, 255, 118, 0.3);
             }
 
             .family-tree div.person {
                 font-size: 11px;
-                font-weight: bold;
-                width: 80px;
-                min-height: 35px;
-                display: inline-block;
                 margin: 10px;
-                /* Ensure proper resizing */
             }
 
             .generation-number {
@@ -478,11 +395,6 @@
                 padding: 15px 5px;
                 display: block;
                 /* Ensure each list item stacks vertically */
-            }
-
-            .family-tree ul ul {
-                display: none;
-                /* Default hidden for toggle functionality */
             }
 
             .family-tree li::after {
@@ -505,36 +417,20 @@
         @media (max-width: 828px) {
 
             body {
-                background-color: rgba(255, 144, 144, 0.3);
-            }
-
-            .navbar h1 {
-                color: #8a008f;
+                background-color: rgba(21, 255, 0, 0.3);
             }
 
             .navcontainer {
                 flex-direction: column;
-                gap: 5px;
             }
 
-            #search-bar {
-                width: 100%;
-                font-size: 20px;
-            }
-
-            #found-persons-dropdown {
-                width: 100%;
-                font-size: 20px;
+            .search-container {
+                margin-top: 0px;
             }
 
             .family-tree div.person {
                 font-size: 11px;
-                font-weight: bold;
-                width: 80px;
-                min-height: 35px;
-                display: inline-block;
                 margin: 10px;
-                /* Ensure proper resizing */
             }
 
             .generation-number {
@@ -547,11 +443,6 @@
                 padding: 15px 5px;
                 display: block;
                 /* Ensure each list item stacks vertically */
-            }
-
-            .family-tree ul ul {
-                display: none;
-                /* Default hidden for toggle functionality */
             }
 
             .family-tree li::after {
@@ -574,36 +465,20 @@
         @media (max-width: 768px) {
 
             body {
-                background-color: rgba(255, 222, 133, 0.3);
-            }
-
-            .navbar h1 {
-                color: #9e3a00;
-            }
-
-            #search-bar {
-                width: 100%;
-                font-size: 20px;
-            }
-
-            #found-persons-dropdown {
-                width: 100%;
-                font-size: 20px;
+                background-color: rgba(255, 0, 200, 0.3);
             }
 
             .navcontainer {
                 flex-direction: column;
-                gap: 5px;
+            }
+
+            .search-container {
+                margin-top: 0px;
             }
 
             .family-tree div.person {
                 font-size: 11px;
-                font-weight: bold;
-                width: 80px;
-                min-height: 35px;
-                display: inline-block;
                 margin: 10px;
-                /* Ensure proper resizing */
             }
 
             .generation-number {
@@ -614,13 +489,6 @@
             .family-tree li {
                 margin: 10px;
                 padding: 15px 5px;
-                display: block;
-                /* Ensure each list item stacks vertically */
-            }
-
-            .family-tree ul ul {
-                display: none;
-                /* Default hidden for toggle functionality */
             }
 
             .family-tree li::after {
@@ -646,34 +514,18 @@
                 background-color: rgba(72, 197, 255, 0.3);
             }
 
-            .navbar h1 {
-                color: #3700ff;
-                font-size: 1.2em;
-            }
-
             .navcontainer {
                 flex-direction: column;
-                gap: 5px;
             }
 
-            #search-bar {
-                width: 100%;
-                font-size: 18px;
-            }
-
-            #found-persons-dropdown {
-                width: 100%;
-                font-size: 18px;
+            .search-container {
+                margin-top: 0px;
             }
 
             .family-tree div.person {
-                font-size: 11px;
+                font-size: 9px;
                 font-weight: bold;
-                width: 80px;
-                min-height: 35px;
-                display: inline-block;
                 margin: 10px;
-                /* Ensure proper resizing */
             }
 
             .generation-number {
@@ -684,13 +536,6 @@
             .family-tree li {
                 margin: 10px;
                 padding: 15px 5px;
-                display: block;
-                /* Ensure each list item stacks vertically */
-            }
-
-            .family-tree ul ul {
-                display: none;
-                /* Default hidden for toggle functionality */
             }
 
             .family-tree li::after {
@@ -709,40 +554,24 @@
 
         }
 
+
         @media (max-width: 480px) {
 
             body {
-                background-color: rgba(255, 225, 128, 0.3);
-            }
-
-            .navbar h1 {
-                color: #2c00cc;
-                font-size: 1em;
+                background-color: rgba(251, 255, 0, 0.3);
             }
 
             .navcontainer {
                 flex-direction: column;
-                gap: 5px;
             }
 
-            #search-bar {
-                width: 100%;
-                font-size: 16px;
-            }
-
-            #found-persons-dropdown {
-                width: 100%;
-                font-size: 16px;
+            .search-container {
+                margin-top: 0px;
             }
 
             .family-tree div.person {
                 font-size: 11px;
-                font-weight: bold;
-                width: 80px;
-                min-height: 35px;
-                display: inline-block;
                 margin: 10px;
-                /* Ensure proper resizing */
             }
 
             .generation-number {
@@ -753,13 +582,6 @@
             .family-tree li {
                 margin: 10px;
                 padding: 15px 5px;
-                display: block;
-                /* Ensure each list item stacks vertically */
-            }
-
-            .family-tree ul ul {
-                display: none;
-                /* Default hidden for toggle functionality */
             }
 
             .family-tree li::after {
