@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree with D3.js</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #d4d4d4;
+        }
+
+        svg {
+            width: 100%;
+            /* Make SVG responsive */
+            height: 100vh;
+        }
+
+        .node circle {
+            fill: #00e1ff;
+            stroke: #333;
+            stroke-width: 2px;
+        }
+
+        .node text {
+            font-size: 10px;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .link {
+            fill: none;
+            stroke: #aaaaaa;
+            stroke-width: 2px;
+        }
+
+        #color-picker {
+            display: flex;
+            gap: 10px;
+            position: fixed;
+            top: 10px;
+            right: 100px;
+        }
+
+        .color-box {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border: 2px solid #000;
+        }
+
+        #reset-button {
+            width: 70px;
+            height: 34px;
+            cursor: pointer;
+            border: 2px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Family Tree</h1>
+    <div id="family-tree"></div>
+    <div id="color-picker">
+        <div class="color-box" style="background-color: red;" data-color="red"></div>
+        <div class="color-box" style="background-color: blue;" data-color="blue"></div>
+        <div class="color-box" style="background-color: green;" data-color="green"></div>
+        <div class="color-box" style="background-color: orange;" data-color="orange"></div>
+        <div class="color-box" style="background-color: violet;" data-color="violet"></div>
+        <div><button id="reset-button" style="background-color: rgb(116, 116, 116);">Reset</button></div>
+    </div>
+    
+
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="app.js"></script>
+    <script src="java.js"></script>
+
+</body>
+
+</html>
