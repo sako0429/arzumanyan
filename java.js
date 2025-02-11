@@ -12,8 +12,8 @@ const svg = d3.select("#family-tree")
 // Create a tree layout with dynamic height
 //const treeLayout = d3.tree().size([width, height - 200]);
 const treeLayout = d3.tree()
-    .nodeSize([23, 460])  // (width, height) → Increase height for more vertical space
-    .separation((a, b) => a.parent === b.parent ? 5 : 10); // Increase for more space
+    .nodeSize([29, 580])  // (width, height) → Increase height for more vertical space
+    .separation((a, b) => a.parent === b.parent ? 8 : 12); // Increase for more space
 
 
 // Convert data into a D3 hierarchy
@@ -62,8 +62,8 @@ document.querySelectorAll(".color-box").forEach(box => {
 
 // Append circles to nodes
 nodes.append("circle")
-    .attr("r", 50)
-    .style("fill", "#fff")
+    .attr("r", 100)
+    .style("fill", "#CFCFCF")
     .style("stroke", "#333")
     .style("stroke-width", "2px")
     .on("click", function (event, d) {
@@ -86,7 +86,7 @@ nodes.append("circle")
             link
                 .attr("data-colors", existingColors) // Store all applied colors
                 .style("stroke", existingColors.split(" ").pop()) // Use the last selected color for stroke
-                .style("stroke-width", "5px");
+                .style("stroke-width", "7px");
 
             current = current.parent; // Move up to root
         }
