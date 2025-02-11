@@ -63,7 +63,7 @@ document.querySelectorAll(".color-box").forEach(box => {
 // Append circles to nodes
 nodes.append("circle")
     .attr("r", 50)
-    .style("fill", "#00e1ff")
+    .style("fill", "#fff")
     .style("stroke", "#333")
     .style("stroke-width", "2px")
     .on("click", function (event, d) {
