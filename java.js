@@ -31,8 +31,8 @@ svg.selectAll(".link")
     .enter().append("path")
     .attr("class", "link")
     .attr("fill", "none")
-    .attr("stroke", "#ccc")
-    .attr("stroke-width", 2)
+    .style("stroke", "#aaaaaa")
+    .attr("stroke-width", 5)
     .attr("d", d3.linkVertical()
         .x(d => d.x)
         .y(d => d.y + 50));  // Adjust spacing
@@ -60,46 +60,51 @@ document.querySelectorAll(".color-box").forEach(box => {
     });
 });
 
+const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
 // Append circles to nodes
 nodes.append("circle")
     .attr("r", 100)
-    .style("fill", "#CFCFCF")
-    .style("stroke", "#333")
-    .style("stroke-width", "2px")
+    .style("fill", d => colorScale(d.depth))
+    .style("stroke", d => d.data.gender === "m" ? "#66b3ff" : "#ff99cc")
+    .style("stroke-width", "14px")
     .on("click", function (event, d) {
         let current = d;
-
         while (current.parent) {
-            // Select the link that connects this node to its parent
             let link = svg.selectAll(".link").filter(link => link.target === current);
-
-            // Get existing colors
-            let existingColors = link.attr("data-colors");
-            if (!existingColors) existingColors = "";
-
-            // Add the selected color if not already applied
+            let existingColors = link.attr("data-colors") || "";
             if (!existingColors.includes(selectedColor)) {
                 existingColors += ` ${selectedColor}`.trim();
             }
-
-            // Update the link color
-            link
-                .attr("data-colors", existingColors) // Store all applied colors
-                .style("stroke", existingColors.split(" ").pop()) // Use the last selected color for stroke
-                .style("stroke-width", "7px");
-
-            current = current.parent; // Move up to root
+            link.attr("data-colors", existingColors)
+                .style("stroke", existingColors.split(" ").pop())
+                .style("stroke-width", "14px");
+            current = current.parent;
         }
+    })
+    .on("mouseover", function () {
+        d3.select(this)
+            .transition().duration(200)
+            .attr("r", 200);  // Increase circle size
+        d3.select(this.parentNode).select("text")
+            .transition().duration(200)
+            .attr("font-size", "50px"); // Increase text size
+    })
+    .on("mouseout", function () {
+        d3.select(this)
+            .transition().duration(200)
+            .attr("r", 100); // Reset circle size
+        d3.select(this.parentNode).select("text")
+            .transition().duration(200)
+            .attr("font-size", "20px"); // Reset text size
     });
-
-
 
 // Append labels to nodes
 nodes.append("text")
     .attr("dy", 5)
     .attr("text-anchor", "middle")
-    .attr("transform", "rotate(0)")
-    .attr("transform", "translate(0, 20)") // Correctly rotates text
+    .attr("transform", "translate(0, 20)")
+    .attr("font-size", "20px")
     .text(d => d.data.name);
 
 // Zoom function
@@ -111,3 +116,27 @@ function zoomed(event) {
 window.addEventListener("resize", () => {
     d3.select("svg").attr("width", window.innerWidth).attr("height", window.innerHeight);
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Check user preference or default to dark mode
+    if (localStorage.getItem("theme") !== "light") { 
+        document.body.classList.add("dark-mode");
+        document.querySelector(".icon").textContent = "🌞";
+    }
+});
+
+document.querySelector(".dark-light").addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+
+    // Change icon
+    const icon = this.querySelector(".icon");
+    icon.textContent = document.body.classList.contains("dark-mode") ? "🌞" : "🌙";
+
+    // Save user preference
+    localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "light" : "dark");
+});
+
+
+
+

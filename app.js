@@ -1,9 +1,11 @@
 // Sample family tree data
 const treeData = {
     name: " 1",
+    gender: "m",
     children: [
         {
             name: " 11",
+            gender: "m",
             children: [
                 { name: " 111",
                     children: [
@@ -501,6 +503,7 @@ const treeData = {
         { name: " 12" },
         {
             name: " 13",
+            gender: "m",
             children: [
                 { name: " 131",
                     children: [
@@ -712,6 +715,7 @@ const treeData = {
         },
         {
             name: " 15",
+            gender: "m",
             children: [
                 { name: " 151" },
                 { name: " 152" },
@@ -803,6 +807,7 @@ const treeData = {
         },
         {
             name: " 18",
+            gender: "m",
             children: [
                 { name: " 181", 
                     children: [
