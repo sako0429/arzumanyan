@@ -64,8 +64,8 @@ const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
 // Append circles to nodes
 nodes.append("circle")
-    .attr("r", 100)
-    .style("fill", d => `url(#gradient-depth-${d.depth})`)
+    .attr("r", d => d.data.name === "ԿՈՍՏԱՆ" ? 200 : 100)
+    .style("fill", d => colorScale(d.depth))
     .style("stroke", d => d.data.gender === "m" ? "#66b3ff" : "#ff99cc")
     .style("stroke-width", "14px")
     .on("click", function (event, d) {
@@ -85,7 +85,7 @@ nodes.append("circle")
     .on("mouseover", function () {
         d3.select(this)
             .transition().duration(200)
-            .attr("r", 230);  // Increase circle size
+            .attr("r", d => d.data.name === "ԿՈՍՏԱՆ" ? 300 : 230)  // Increase circle size
         d3.select(this.parentNode).select("text")
             .transition().duration(200)
             .attr("font-size", "65px")
@@ -93,7 +93,7 @@ nodes.append("circle")
     .on("mouseout", function () {
         d3.select(this)
             .transition().duration(200)
-            .attr("r", 100); // Reset circle size
+            .attr("r", d => d.data.name === "ԿՈՍՏԱՆ" ? 200 : 100) // Reset circle size
         d3.select(this.parentNode).select("text")
             .transition().duration(200)
             .attr("font-size", "33px"); // Reset text size
@@ -115,7 +115,7 @@ nodes.append("text")
     .attr("text-anchor", "middle")
     .style("font-size", "30px") // Adjust font size
     .style("fill", "#ccc") // Set color for better visibility
-    .text(d => `Սերունդ ${d.depth}`);
+    .text(d => d.depth === 0 ? "" : d.depth === 1 ? "1-ին" : `${d.depth}-րդ`);
 
 
 // Append hidden info text (appears on hover)
@@ -167,11 +167,17 @@ window.addEventListener("resize", () => {
 
 document.addEventListener("DOMContentLoaded", function () {
     // Check user preference or default to dark mode
-    if (localStorage.getItem("theme") !== "light") {
+    if (localStorage.getItem("theme") === "light") {
+        document.body.classList.remove("dark-mode");
+        document.querySelector(".icon").textContent = "🌙";
+    } else {
         document.body.classList.add("dark-mode");
         document.querySelector(".icon").textContent = "🌞";
     }
 });
+
+
+
 
 document.querySelector(".dark-light").addEventListener("click", function () {
     document.body.classList.toggle("dark-mode");
@@ -184,44 +190,5 @@ document.querySelector(".dark-light").addEventListener("click", function () {
     localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "light" : "dark");
 });
 
-
-const svgDefs = svg.append("defs");
-
-// Function to generate unique gradient IDs
-function createGradient(id, color1, color2) {
-    const gradient = svgDefs.append("linearGradient")
-        .attr("id", id)
-        .attr("x1", "0%").attr("y1", "0%")
-        .attr("x2", "0%").attr("y2", "100%"); // Vertical gradient
-
-    gradient.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", color1);
-
-    gradient.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", color2);
-}
-
-// Define gradient colors for different generations
-const gradientColors = [
-    ["#333399", "#12C2E9"],    // Root person
-    ["#12C2E9", "#F64F59"],
-    ["#F64F59", "#FF00CC"],
-    ["#FF00CC", "#F55555"],
-    ["#F55555", "#7F7FD5"],
-    ["#7F7FD5", "#91EAE4"],
-    ["#91EAE4", "#31B7C2"],
-    ["#31B7C2", "#7BC393"],
-    ["#7BC393", "#FFD3A5"],
-    ["#FFD3A5", "#FD6585"],
-    ["#FD6585", "#0F3443"],
-    ["#0F3443", "#34E89E"]
-];
-
-// Generate gradients for each generation
-gradientColors.forEach((colors, index) => {
-    createGradient(`gradient-depth-${index}`, colors[0], colors[1]);
-});
 
 
