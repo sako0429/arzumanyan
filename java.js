@@ -13,7 +13,7 @@ const svg = d3.select("#family-tree")
 //const treeLayout = d3.tree().size([width, height - 200]);
 const treeLayout = d3.tree()
     .nodeSize([29, 580])  // (width, height) → Increase height for more vertical space
-    .separation((a, b) => a.parent === b.parent ? 8 : 12); // Increase for more space
+    .separation((a, b) => a.parent === b.parent ? 8 : 14); // Increase for more space
 
 
 // Convert data into a D3 hierarchy
@@ -65,7 +65,7 @@ const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 // Append circles to nodes
 nodes.append("circle")
     .attr("r", 100)
-    .style("fill", d => colorScale(d.depth))
+    .style("fill", d => `url(#gradient-depth-${d.depth})`)
     .style("stroke", d => d.data.gender === "m" ? "#66b3ff" : "#ff99cc")
     .style("stroke-width", "14px")
     .on("click", function (event, d) {
@@ -85,10 +85,10 @@ nodes.append("circle")
     .on("mouseover", function () {
         d3.select(this)
             .transition().duration(200)
-            .attr("r", 200);  // Increase circle size
+            .attr("r", 230);  // Increase circle size
         d3.select(this.parentNode).select("text")
             .transition().duration(200)
-            .attr("font-size", "50px"); // Increase text size
+            .attr("font-size", "65px")
     })
     .on("mouseout", function () {
         d3.select(this)
@@ -96,16 +96,63 @@ nodes.append("circle")
             .attr("r", 100); // Reset circle size
         d3.select(this.parentNode).select("text")
             .transition().duration(200)
-            .attr("font-size", "20px"); // Reset text size
+            .attr("font-size", "33px"); // Reset text size
+
     });
 
 // Append labels to nodes
 nodes.append("text")
     .attr("dy", 5)
     .attr("text-anchor", "middle")
-    .attr("transform", "translate(0, 20)")
-    .attr("font-size", "20px")
+    .attr("transform", "translate(0, 10)")
+    .attr("font-size", "33px")
     .text(d => d.data.name);
+
+// Append generation number text to each node
+nodes.append("text")
+    .attr("class", "generation-text")
+    .attr("dy", -40) // Adjust position below the name
+    .attr("text-anchor", "middle")
+    .style("font-size", "30px") // Adjust font size
+    .style("fill", "#ccc") // Set color for better visibility
+    .text(d => `Սերունդ ${d.depth}`);
+
+
+// Append hidden info text (appears on hover)
+nodes.append("text")
+    .attr("class", "info-text")
+    .attr("dy", 85) // Position below the name
+    .attr("text-anchor", "middle")
+    .style("font-size", "60px")
+    .style("fill", "#ccc")
+    .style("visibility", "hidden") // Hide initially
+    .text(d => d.data.info ? `${d.data.info}` : "");
+
+// Append hidden children count text (appears on hover)
+nodes.append("text")
+    .attr("class", "children-text")
+    .attr("dy", 145) // Position below info
+    .attr("text-anchor", "middle")
+    .style("font-size", "55px")
+    .style("fill", "#ccc")
+    .style("visibility", "hidden") // Hide initially
+    .text(d => d.children ? `${d.children.length} երեխա` : ""); // Correct placement
+
+// Show info & children count on hover
+nodes.on("mouseover", function (event, d) {
+    d3.select(this).select(".info-text").style("visibility", "visible");
+    d3.select(this).select(".children-text").style("visibility", "visible");
+    d3.select(this).select(".generation-text").style("font-size", "50px");
+    d3.select(this).select(".generation-text").attr("dy", -80);
+});
+
+// Hide info & children count
+nodes.on("mouseout", function (event, d) {
+    d3.select(this).select(".info-text").style("visibility", "hidden");
+    d3.select(this).select(".children-text").style("visibility", "hidden");
+    d3.select(this).select(".generation-text").style("font-size", "30px");
+    d3.select(this).select(".generation-text").attr("dy", -40);
+});
 
 // Zoom function
 function zoomed(event) {
@@ -120,7 +167,7 @@ window.addEventListener("resize", () => {
 
 document.addEventListener("DOMContentLoaded", function () {
     // Check user preference or default to dark mode
-    if (localStorage.getItem("theme") !== "light") { 
+    if (localStorage.getItem("theme") !== "light") {
         document.body.classList.add("dark-mode");
         document.querySelector(".icon").textContent = "🌞";
     }
@@ -138,5 +185,43 @@ document.querySelector(".dark-light").addEventListener("click", function () {
 });
 
 
+const svgDefs = svg.append("defs");
+
+// Function to generate unique gradient IDs
+function createGradient(id, color1, color2) {
+    const gradient = svgDefs.append("linearGradient")
+        .attr("id", id)
+        .attr("x1", "0%").attr("y1", "0%")
+        .attr("x2", "0%").attr("y2", "100%"); // Vertical gradient
+
+    gradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", color1);
+
+    gradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", color2);
+}
+
+// Define gradient colors for different generations
+const gradientColors = [
+    ["#333399", "#12C2E9"],    // Root person
+    ["#12C2E9", "#F64F59"],
+    ["#F64F59", "#FF00CC"],
+    ["#FF00CC", "#F55555"],
+    ["#F55555", "#7F7FD5"],
+    ["#7F7FD5", "#91EAE4"],
+    ["#91EAE4", "#31B7C2"],
+    ["#31B7C2", "#7BC393"],
+    ["#7BC393", "#FFD3A5"],
+    ["#FFD3A5", "#FD6585"],
+    ["#FD6585", "#0F3443"],
+    ["#0F3443", "#34E89E"]
+];
+
+// Generate gradients for each generation
+gradientColors.forEach((colors, index) => {
+    createGradient(`gradient-depth-${index}`, colors[0], colors[1]);
+});
 
 
