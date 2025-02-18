@@ -232,20 +232,30 @@
             text-overflow: ellipsis;
         }
 
+        .n {
+            border: 5px solid #797979;
+            border-left: 19px solid #797979;
+            border-right: 10px solid #797979;
+        }
+
         .m {
             border: 5px solid #2b40ff;
             border-left: 19px solid #2b40ff;
             border-right: 10px solid #2b40ff;
         }
 
-        .f {
+        .w {
             border: 5px solid #ff00ea;
             border-left: 19px solid #ff00ea;
             border-right: 10px solid #ff00ea;
         }
 
+        .gen0 {
+            background-color: rgb(145, 83, 64);
+        }
+
         .gen1 {
-            background-color: #FF6B6B;
+            background-color: #df8383;
             /* Soft Red */
         }
 
@@ -296,7 +306,8 @@
 
 
         .m::after,
-        .f::after {
+        .w::after,
+        .n::after {
             content: var(--children-count, '');
             position: absolute;
             bottom: -20px;
@@ -316,7 +327,7 @@
             background: #39b300;
         }
 
-        .f::after {
+        .w::after {
             background: #f1ffeb;
         }
 
