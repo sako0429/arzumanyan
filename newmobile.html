@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arzumanyan's Family Tree</title>
+    <style>
+        html {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            height: 100dvh;
+            background-color: #b40000;
+        }
+
+        .navcontainer {
+            width: 90vw;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            text-align: center;
+            gap: 5px;
+        }
+
+        /* Navigation bar styling */
+        .navbar {
+            width: 100vw;
+            height: fit-content;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            font-size: clamp(1em, 4vw, 1.5em);
+            font-style: oblique;
+            text-align: center;
+            color: rgb(255, 174, 0);
+        }
+
+        .title {
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Search container adjustments */
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            /* Ensure input and dropdown are in a row */
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .for-search {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .for-drop {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Input box styles */
+        #search-bar {
+            padding: 8px;
+            font-size: clamp(1em, 4vw, 1.5em);
+            width: 100%;
+            background-color: #a4f1ff;
+            outline-color: #ff00ea;
+            border-radius: 5px;
+        }
+
+        .searchbtn {
+            padding: 8px;
+            font-size: 23px;
+            width: auto;
+            background-color: #1b3dff;
+            outline-color: #ff00ea;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        /* Dropdown styling */
+        #found-persons-dropdown {
+            padding: 8px;
+            font-size: clamp(1em, 4vw, 1.5em);
+            width: 100%;
+            max-width: 100%;
+            /* Ensures it's not too small */
+            border-radius: 5px;
+            background-color: #a4f1ff;
+            outline-color: #ff00ea;
+        }
+
+
+
+        .generation-number {
+            transform: rotate(-90deg);
+            width: fit-content;
+            font-size: 9px;
+            text-align: center;
+            position: absolute;
+            left: -32px;
+            bottom: 24px;
+            color: #ffffff;
+        }
+
+        .children-info {
+            position: absolute;
+            left: 10px;
+            bottom: 0px;
+            color: #585858;
+        }
+
+        .children-count {
+            text-align: start;
+            font-weight: lighter;
+        }
+
+        .family-tree-container {
+            position: relative;
+            /* Allows `.family-tree` to move within */
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            /* Prevents unwanted scrollbars */
+        }
+
+
+        .family-tree {
+            position: absolute;
+            top: 30%;
+            left: calc(50% - 150px);
+            text-align: center;
+            align-self: flex-start;
+        }
+
+        .family-tree ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            padding-left: 0;
+        }
+
+        .family-tree ul ul {
+            display: none;
+            /* Hidden by default for interactivity */
+        }
+
+
+        .family-tree li {
+            text-align: center;
+            position: relative;
+            align-items: start;
+            padding: 5px 0px;
+            margin: 5px;
+            list-style: none;
+        }
+
+        .family-tree li::after {
+            content: "";
+            position: absolute;
+            text-align: center;
+            top: 20px;
+            right: -50px;
+            width: 100%;
+            height: 60px;
+            background-color: rgb(100, 100, 100);
+            z-index: -100;
+        }
+
+        .family-tree li::before {
+            content: "";
+            position: absolute;
+            text-align: center;
+            top: 20px;
+            left: -50px;
+            width: 100%;
+            height: 60px;
+            background-color: rgb(100, 100, 100);
+            z-index: -100;
+        }
+
+
+        .family-tree ul>li:last-child::after {
+            display: none;
+        }
+
+        /* Remove top vertical line for first child */
+        .family-tree ul>li:first-child::before {
+            display: none;
+        }
+
+        /* Box styles for persons */
+        .family-tree div.person {
+            color: #000000;
+            display: inline-block;
+            width: 120px;
+            min-height: 50px;
+            border-radius: 8px;
+            padding: 10px;
+            padding-top: 2px;
+            margin: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            position: relative;
+            cursor: pointer;
+            transition: width 0.3s ease, height 0.3s ease;
+            text-overflow: ellipsis;
+        }
+
+        .m {
+            border: 5px solid #2b40ff;
+            border-left: 19px solid #2b40ff;
+            border-right: 10px solid #2b40ff;
+        }
+
+        .f {
+            border: 5px solid #ff00ea;
+            border-left: 19px solid #ff00ea;
+            border-right: 10px solid #ff00ea;
+        }
+
+        .gen1 {
+            background-color: #FF6B6B;
+            /* Soft Red */
+        }
+
+        .gen2 {
+            background-color: #FFD166;
+            /* Warm Yellow */
+        }
+
+        .gen3 {
+            background-color: #06D6A0;
+            /* Greenish-Teal */
+        }
+
+        .gen4 {
+            background-color: #d95cff;
+            /* Ocean Blue */
+        }
+
+        .gen5 {
+            background-color: #005dd6;
+            /* Deep Blue */
+        }
+
+        .gen6 {
+            background-color: #EF476F;
+            /* Vibrant Pink */
+        }
+
+        .gen7 {
+            background-color: #4fc7ff;
+            /* Strong Purple */
+        }
+
+        .gen8 {
+            background-color: #FF9F1C;
+            /* Bright Orange */
+        }
+
+        .gen9 {
+            background-color: #2A9D8F;
+            /* Muted Teal */
+        }
+
+        .gen10 {
+            background-color: #B56576;
+            /* Soft Burgundy */
+        }
+
+
+        .m::after,
+        .f::after {
+            content: var(--children-count, '');
+            position: absolute;
+            bottom: -20px;
+            right: 0px;
+            color: #000000;
+            width: 23px;
+            height: 23px;
+            border-radius: 0% 50% 50% 50%;
+            line-height: 25px;
+            text-align: center;
+            font-size: 20px;
+            border: 1px solid #000000;
+        }
+
+        /* Expand/collapse toggle button */
+        .m::after {
+            background: #39b300;
+        }
+
+        .f::after {
+            background: #f1ffeb;
+        }
+
+        /* Keyframes for child background color animation */
+        @keyframes bgColorChange {
+            0% {
+                border-color: #ffffff;
+                border-left-color: #3700ff;
+                border-right-color: #3700ff;
+            }
+
+            50% {
+                border-color: #3700ff;
+            }
+
+            100% {
+                border-color: #ffffff;
+                border-left-color: #3700ff;
+                border-right-color: #3700ff;
+            }
+        }
+
+        /* Apply animation to child elements of an expanded .person */
+        .person.expanded {
+            animation: bgColorChange 2s ease-in-out infinite;
+        }
+
+
+        .person.expanded::after {
+            content: var(--children-count, '');
+            background: #ff6924;
+        }
+
+        @keyframes bgColorChange2 {
+            0% {
+                background-color: #ff8888;
+            }
+
+            33% {
+                background-color: #6940ff;
+            }
+
+            66% {
+                background-color: #ffc446;
+            }
+
+            100% {
+                background-color: #ff8888;
+            }
+        }
+
+        .highlight {
+            animation: bgColorChange2 1.5s ease-in-out infinite;
+        }
+
+
+
+
+        @media (max-width: 1024px) {
+
+            body {
+                background-color: rgba(168, 255, 118, 0.3);
+            }
+
+            .family-tree div.person {
+                font-size: 11px;
+                margin: 10px;
+            }
+
+            .generation-number {
+                left: -32px;
+                bottom: 23px;
+            }
+
+            .family-tree li {
+                margin: 10px;
+                padding: 15px 5px;
+            }
+
+            .family-tree li::after {
+                top: 42px;
+                right: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+            .family-tree li::before {
+                top: 42px;
+                left: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+        }
+
+
+        @media (max-width: 828px) {
+
+            body {
+                background-color: rgba(21, 255, 0, 0.3);
+            }
+
+            .navcontainer {
+                flex-direction: column;
+            }
+
+            .search-container {
+                margin-top: 0px;
+            }
+
+            .family-tree div.person {
+                font-size: 11px;
+                margin: 10px;
+            }
+
+            .generation-number {
+                left: -32px;
+                bottom: 23px;
+            }
+
+            .family-tree li {
+                margin: 10px;
+                padding: 15px 5px;
+            }
+
+            .family-tree li::after {
+                top: 42px;
+                right: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+            .family-tree li::before {
+                top: 42px;
+                left: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            body {
+                background-color: rgba(255, 0, 200, 0.3);
+            }
+
+            .navcontainer {
+                flex-direction: column;
+            }
+
+            .search-container {
+                margin-top: 0px;
+            }
+
+            .family-tree div.person {
+                font-size: 10px;
+                margin: 10px;
+            }
+
+            .generation-number {
+                left: -32px;
+                bottom: 23px;
+            }
+
+            .family-tree li {
+                margin: 10px;
+                padding: 15px 5px;
+            }
+
+            .family-tree li::after {
+                top: 42px;
+                right: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+            .family-tree li::before {
+                top: 42px;
+                left: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+        }
+
+
+        @media (max-width: 576px) {
+
+            body {
+                background-color: rgba(72, 197, 255, 0.3);
+            }
+
+            .navcontainer {
+                flex-direction: column;
+            }
+
+            .search-container {
+                margin-top: 0px;
+            }
+
+            .generation-number {
+                left: -32px;
+                bottom: 23px;
+            }
+
+            .family-tree div.person {
+                font-size: 9px;
+                margin: 10px;
+            }
+
+            .family-tree li {
+                margin: 10px;
+                padding: 15px 5px;
+            }
+
+            .family-tree li::after {
+                top: 42px;
+                right: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+            .family-tree li::before {
+                top: 42px;
+                left: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            body {
+                background-color: rgba(251, 255, 0, 0.3);
+            }
+
+            .navcontainer {
+                flex-direction: column;
+            }
+
+            .search-container {
+                margin-top: 0px;
+            }
+
+            .family-tree div.person {
+                font-size: 9px;
+                margin: 10px;
+            }
+
+            .generation-number {
+                left: -32px;
+                bottom: 23px;
+            }
+
+            .family-tree li {
+                margin: 10px;
+                padding: 15px 5px;
+            }
+
+            .family-tree li::after {
+                top: 42px;
+                right: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+            .family-tree li::before {
+                top: 42px;
+                left: -30px;
+                width: 100%;
+                height: 30px;
+            }
+
+        }
+
+
+        .fixed-widget {
+            position: fixed;
+            bottom: 2vh;
+            /* Keep it at the bottom relative to viewport height */
+            right: 2vw;
+            /* Keep it in the right corner relative to viewport width */
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            background-color: rgba(116, 0, 0, 0.7);
+            color: rgb(255, 255, 255);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            z-index: 9999;
+            transform-origin: bottom right;
+        }
+
+        .fixed-widget.free-widget {
+            position: fixed;
+            bottom: 2vh;
+            /* Keep it at the bottom relative to viewport height */
+            right: 2vw;
+            /* Keep it in the right corner relative to viewport width */
+            width: 150px;
+            height: 50px;
+            margin: 5px;
+            background-color: rgba(0, 133, 7, 0.7);
+            color: rgb(255, 255, 255);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            z-index: 9999;
+            transform-origin: bottom right;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="navbar">
+        <div class="navcontainer">
+            <div class="title">
+                <h1>Խոջաբեկ գյուղի<br>Արզումանյան գերդաստանի տոհմածառ</h1>
+            </div>
+            <div class="search-container">
+                <div class="for-search">
+                    <input type="text" id="search-bar" placeholder="Ու՞մ ենք փնտրում..." />
+                    <button class="searchbtn">Փնտրել</button>
+                </div>
+                <div class="for-drop">
+                    <select id="found-persons-dropdown">
+                        <option value="">* Փնտրման արդյունքները</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="family-tree-container">
+        <div class="family-tree" id="family-tree"></div>
+    </div>
+
+
+
+    <button class="fixed-widget" id="makefree">tech</button>
+
+
+    <script>
+
+        document.getElementById("makefree").addEventListener("click", function () {
+            let treeContainer = document.querySelector(".family-tree-container");
+            let button = document.getElementById("makefree");  // Get the button element
+
+            if (treeContainer) {
+                // Toggle the overflow property between 'visible' and 'auto'
+                if (treeContainer.style.overflow === "visible") {
+                    treeContainer.style.overflow = "auto";
+                    button.textContent = "tech";
+                } else {
+                    treeContainer.style.overflow = "visible";
+                    button.textContent = "tech mode active";
+                }
+            }
+
+            // Toggle a class on the button
+            button.classList.toggle("free-widget");
+        });
+
+
+
+
+
+
+
+
+
+
+
+        fetch("data.json")
+            .then(response => response.json())
+            .then(treeData => {
+                buildFamilyTree(treeData); // Call function after fetching data
+            })
+            .catch(error => console.error("Error loading data:", error));
+
+        function buildFamilyTree(treeData) {
+            const familyTreeContainer = document.getElementById("family-tree");
+            familyTreeContainer.innerHTML = ""; // Clear existing content
+
+            function createPersonElement(person) {
+                const personDiv = document.createElement("div");
+
+                personDiv.classList.add("person", `gen${person.gen}`);
+                if (person.gender) {
+                    personDiv.classList.add(person.gender.trim().toLowerCase());
+                }
+
+                const childrenCount = parseInt(person["chcount"]) || 0;
+                personDiv.style.setProperty('--children-count', `"${childrenCount}"`);
+
+                personDiv.setAttribute("branch", person.ID);
+
+                // Set name and additional info
+                let personContent = `<strong>${person.name}</strong>`;
+                if (person.wife) personContent += ` <br> ${person.wife}`;
+                if (person.info) personContent += `<br><span class="info"><em>${person.info}</em></span>`;
+
+                personDiv.innerHTML = personContent;
+
+
+
+                // Add click event to toggle children
+                personDiv.addEventListener("click", function () {
+                    toggleBranch(personDiv);
+                });
+
+                addGenerationNumber(personDiv, person);
+
+                return personDiv;
+            }
+
+            function createTree(person) {
+                const personElement = createPersonElement(person);
+                const listItem = document.createElement("li");
+                listItem.appendChild(personElement);
+
+                if (person.children && person.children.length > 0) {
+                    const childrenList = document.createElement("ul");
+                    childrenList.style.display = "none"; // Start collapsed
+
+                    person.children.forEach(child => {
+                        const childItem = createTree(child);
+                        childrenList.appendChild(childItem);
+                    });
+
+                    listItem.appendChild(childrenList);
+                }
+
+                return listItem;
+            }
+
+            // Start building from root
+            const treeList = document.createElement("ul");
+            treeList.appendChild(createTree(treeData));
+
+            // Append to the tree container
+            familyTreeContainer.appendChild(treeList);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        // Add Generation Number
+        function addGenerationNumber(personElement, person) {
+            // Retrieve the generation number directly from the person object
+            const genNumber = person.gen; // Get the generation from the JSON data
+
+            if (genNumber !== undefined) {
+                const genDiv = document.createElement('div');
+                genDiv.className = 'generation-number';
+                genDiv.textContent = ` Սերունդ ${genNumber}`; // Add generation text
+
+                personElement.appendChild(genDiv); // Append the generation number to the person element
+            }
+        }
+
+
+
+
+        // Adjust Tree Position
+        function adjustTreePosition(expandedElement) {
+            if (!expandedElement) return; // If no element is provided, do nothing
+
+            expandedElement.scrollIntoView({
+                behavior: 'smooth', // Smooth scrolling effect
+                block: 'center', // Center vertically
+                inline: 'center' // Center horizontally
+            });
+        }
+
+
+        // Calculate the total width of an element including margins
+        function calculateElementWidth(element) {
+            const style = window.getComputedStyle(element);
+            const width = element.offsetWidth; // Element width including padding and border
+            const marginLeft = parseFloat(style.marginLeft) || 0;
+            const marginRight = parseFloat(style.marginRight) || 0;
+            return width + marginLeft + marginRight;
+        }
+
+
+
+        // Toggle Branch
+        function toggleBranch(element) {
+            if (element.classList.contains('gen0') && element.classList.contains('expanded')) {
+                location.reload(); // Reload the page
+                return; // Stop further execution
+            }
+            const childrenContainer = element.nextElementSibling;
+
+            if (childrenContainer && childrenContainer.tagName === 'UL') {
+                const isExpanded = childrenContainer.style.display === 'flex';
+
+                // Toggle display style
+                childrenContainer.style.display = isExpanded ? 'none' : 'flex';
+
+                // Toggle the expanded class
+                element.classList.toggle('expanded', !isExpanded);
+
+                // Get direct parent and parent branches up to root
+                const parentBranch = element.getAttribute('branch');
+                const parent = findParentByBranch(parentBranch); // Find the direct parent
+                const parentBranches = getParentBranches(element); // Find the parent branch up to the root
+
+                parentBranches.forEach(branch => {
+                    const parentElement = document.querySelector(`.person[branch="${branch}"]`);
+                    if (parentElement) {
+                        parentElement.classList.add('expanded');
+                    }
+                });
+
+                // Get direct children and their branches
+                const children = findDirectChildrenByBranch(parentBranch);
+                const childrenBranches = children.map(child => child.getAttribute('branch'));
+                //const childrenAll = findChildrenByBranch(element.getAttribute('branch'));
+
+                // console.log('Parent:', parent);
+                // console.log('Parent Branches up to root:', parentBranches);
+                //console.log('Direct Children:', children);
+                //console.log('Direct Children Branches:', childrenBranches);
+                //console.log('All Children:', childrenAll);
+                //console.log('All Children:', childrenAll.length);
+
+                if (!isExpanded) {
+                    // Expanding: Apply width change for all parent branches recursively
+                    const totalChildrenWidth = calculateChildrenTotalWidth(childrenContainer);
+                    element.style.width = `${totalChildrenWidth}px`;
+                    updateParentWidths(parentBranches);
+                    displayAllChildren(element);
+                } else {
+                    // Collapsing: Reset width and remove 'expanded' class from children
+                    element.style.width = `60px`;
+                    element.querySelector('.children-info').remove();
+                }
+                // Adjust tree position if needed
+                adjustTreePosition(element);
+            }
+
+        }
+
+
+        // Update widths of parent branches recursively
+        function updateParentWidths(parentBranches) {
+            // console.log('Expand called for:', parentBranches);
+            parentBranches.forEach(branch => {
+                const parentElement = document.querySelector(`.person[branch="${branch}"]`);
+                if (parentElement) {
+                    const childrenContainer = parentElement.nextElementSibling;
+                    const totalChildrenWidth = calculateChildrenTotalWidth(childrenContainer); // Get total width of children container
+                    parentElement.style.width = `${totalChildrenWidth}px`; // Set width based on children container's total width
+                    // console.log(`Expanded parent [${branch}] width: ${parentElement.style.width}`);
+                }
+            });
+        }
+
+
+        function displayAllChildren(element) {
+            if (!element) return;
+
+            let counts = [];
+            let level = 0;
+
+            // Get the person's generation from class "genX"
+            const personClasses = element.classList;
+            const genClass = [...personClasses].find(cls => cls.startsWith('gen'));
+            const baseGeneration = genClass ? parseInt(genClass.replace('gen', ''), 10) : 0;
+
+            function countChildren(parent, depth) {
+                const childrenContainer = parent.nextElementSibling;
+                if (!childrenContainer || childrenContainer.tagName !== 'UL') return 0;
+
+                const children = childrenContainer.querySelectorAll(':scope > li > .person');
+                const count = children.length;
+
+                if (count > 0) {
+                    counts[depth] = (counts[depth] || 0) + count;
+                }
+
+                children.forEach(child => countChildren(child, depth + 1));
+
+                return count;
+            }
+
+            countChildren(element, level);
+
+            // Format result with correct generation numbers
+            const resultText = counts
+                .map((count, index) => `gen(${baseGeneration + index + 1}) >${count}`)
+                .join('; ');
+
+            // Display under the person's name
+            let infoElement = element.querySelector('.children-info');
+            if (!infoElement) {
+                infoElement = document.createElement('div');
+                infoElement.className = 'children-info';
+                element.appendChild(infoElement);
+            }
+            infoElement.textContent = resultText || 'No descendants';
+        }
+
+
+
+
+
+        function findDirectChildrenByBranch(parentBranch) {
+            // Select all elements with a branch attribute starting with the parentBranch
+            return Array.from(document.querySelectorAll(`.person[branch^="${parentBranch}"]`))
+                .filter(child => {
+                    // Only include children with exactly one additional digit (direct children)
+                    return child.getAttribute('branch').length === parentBranch.length + 1;
+                });
+        }
+
+        function findChildrenByBranch(parentBranch) {
+            return Array.from(document.querySelectorAll(`.person[branch^="${parentBranch}"]`));
+        }
+
+
+        function findParentByBranch(childBranch) {
+            if (!childBranch || childBranch.length === 0) return null; // ✅ Prevents null, undefined, or empty strings
+            const parentBranch = childBranch.slice(0, -1); // Remove the last character
+            return document.querySelector(`.person[branch="${parentBranch}"]`) || null; // ✅ Returns null if no match is found
+        }
+
+
+
+        function getParentBranches(element) {
+            const branch = element.getAttribute('branch');
+            const parents = [];
+            let currentBranch = branch;
+
+            while (currentBranch.length > 1) {
+                currentBranch = currentBranch.slice(0, -1); // Remove last character to move up the tree
+                parents.push(currentBranch);
+            }
+
+            return parents; // This now excludes the clicked element itself
+        }
+
+
+        function calculateChildrenTotalWidth(parentElement) {
+            let totalWidth = 0;
+
+            // Get only visible children
+            const children = Array.from(parentElement.children).filter(child => {
+                return window.getComputedStyle(child).display !== 'none'; // Ignore hidden children
+            });
+
+            children.forEach(child => {
+                totalWidth += calculateElementWidth(child);
+            });
+
+            return totalWidth;
+        }
+
+
+
+        function performSearch() {
+            const query = document.getElementById('search-bar').value.trim().toLowerCase();
+            if (!query) return;
+
+            const familyMembers = document.querySelectorAll('.person');
+            const dropdown = document.getElementById('found-persons-dropdown');
+            dropdown.innerHTML = '<option value="">Ընտրել ցանկից</option>'; // Clear previous options
+
+            // Expand all branches
+            document.querySelectorAll('.person').forEach(person => {
+                const childrenContainer = person.nextElementSibling;
+                if (childrenContainer && childrenContainer.tagName === 'UL') {
+                    childrenContainer.style.display = 'flex';
+                }
+            });
+
+            // Reset zoom
+            const myTree = document.querySelector('.family-tree');
+            myTree.style.transform = 'scale(1)';
+
+            // Search logic
+            familyMembers.forEach(person => {
+                const personName = person.textContent.trim().toLowerCase();
+                if (personName.includes(query)) {
+                    const branch = person.getAttribute('branch') || 'No branch';
+                    const option = document.createElement('option');
+                    option.value = branch;
+                    option.textContent = `${person.textContent.trim()} | ${branch}`;
+                    dropdown.appendChild(option);
+                }
+            });
+        }
+
+
+
+
+        // Run search on button click
+        document.querySelector('.searchbtn').addEventListener('click', performSearch);
+
+        // Run search on Enter key press inside the search bar
+        document.getElementById('search-bar').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                performSearch();
+            }
+        });
+
+        // Reset search on focus
+        document.getElementById('search-bar').addEventListener('focus', function () {
+            const dropdown = document.getElementById('found-persons-dropdown');
+            dropdown.innerHTML = '<option value="">Տեսնել</option>'; // Clear dropdown
+        });
+
+
+
+
+
+
+        document.getElementById('found-persons-dropdown').addEventListener('change', function () {
+            const selectedBranch = this.value;
+            const selectedPerson = document.querySelector(`.person[branch="${selectedBranch}"]`);
+
+            if (selectedPerson) {
+                selectedPerson.classList.add('highlight');
+                selectedPerson.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',    // Center vertically
+                    inline: 'center'    // Center horizontally
+                });
+            } else {
+                alert('Person not found');
+                selectedPerson.classList.remove('highlight');
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
