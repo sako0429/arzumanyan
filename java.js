@@ -91,7 +91,7 @@ function buildFamilyTree(treeData) {
     nodes.append("circle")
         .attr("r", d => d.data.name === "ԿՈՍՏԱՆ" ? 200 : 100)
         .style("fill", d => colorScale(d.depth))
-        .style("stroke", d => d.data["gender"] === "m" ? "#66b3ff" : "#ff99cc")
+        .style("stroke", d => d.data["gender"] === "m" ? "#66b3ff" : d.data["gender"] === "w" ? "#ff99cc" : "#797979")
         .style("stroke-width", "14px")
         .on("click", function (event, d) {
             let current = d;
