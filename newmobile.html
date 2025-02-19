@@ -152,7 +152,7 @@
         .family-tree {
             position: absolute;
             top: 30%;
-            left: calc(50% - 150px);
+            left: calc(50% - 100px);
             text-align: center;
             align-self: flex-start;
         }
@@ -218,9 +218,9 @@
         .family-tree div.person {
             color: #000000;
             display: inline-block;
-            width: 120px;
-            min-height: 50px;
-            border-radius: 8px;
+            width: clamp(10em, 4vw, 16em);
+            min-height: 60px;
+            border-radius: 5px;
             padding: 10px;
             padding-top: 2px;
             margin: 5px;
@@ -251,7 +251,7 @@
         }
 
         .gen0 {
-            background-color: rgb(145, 83, 64);
+            background-color: rgb(149, 198, 255);
         }
 
         .gen1 {
@@ -884,7 +884,7 @@
                     displayAllChildren(element);
                 } else {
                     // Collapsing: Reset width and remove 'expanded' class from children
-                    element.style.width = `60px`;
+                    element.style.width = `clamp(10em, 4vw, 16em)`;
                     element.querySelector('.children-info').remove();
                 }
                 // Adjust tree position if needed
